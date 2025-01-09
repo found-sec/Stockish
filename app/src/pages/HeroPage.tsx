@@ -78,7 +78,7 @@ export default function HeroPage() {
 
           <Box flex="1">
             <Image
-              src="../../../../Showcase1.png"
+              src="/Showcase1.png"
               alt="Homepage & Markets Showcase"
               borderRadius="lg"
               objectFit="cover"
@@ -97,7 +97,7 @@ export default function HeroPage() {
         >
           <Box flex="1">
             <Image
-              src="../../../Showcase2.png"
+              src="/Showcase2.png"
               alt="How to trade Page Showcase"
               borderRadius="lg"
               objectFit="cover"
@@ -141,7 +141,7 @@ export default function HeroPage() {
 
           <Box flex="1">
             <Image
-              src="../../../Showcase3.png"
+              src="/Showcase3.png"
               alt="Stock Chart showcase"
               borderRadius="lg"
               objectFit="cover"
@@ -159,7 +159,7 @@ export default function HeroPage() {
         >
           <Box flex="1">
             <Image
-              src="../../../Showcase4.png"
+              src="/Showcase4.png"
               alt="Leaderboard Showcase"
               borderRadius="lg"
               objectFit="cover"
