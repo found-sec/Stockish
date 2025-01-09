@@ -28,14 +28,14 @@ app.use(express.json());
 // Ratelimiting
 const apiLimiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 250, // Limit each IP to 250 requests per `window` (here, per 15 minutes)
-	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+	max: 250, // Limit each IP to 250 requests per window (here, per 15 minutes)
+	standardHeaders: true, // Return rate limit info in the RateLimit-* headers
+	legacyHeaders: false, // Disable the X-RateLimit-* headers
 });
 
 const loginLimiter = rateLimit({
 	windowMs: 30 * 60 * 1000, // 30 minutes
-	max: 15, // Limit each IP to 15 login requests per `window` (here, per 30 minutes)
+	max: 15, // Limit each IP to 15 login requests per window (here, per 30 minutes)
 	message:
 		"Too many login attempts from this IP, please try again after an hour.",
 	standardHeaders: true,
