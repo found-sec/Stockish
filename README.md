@@ -1,5 +1,7 @@
+[Stockish Logo](/hackathon_logo.svg)
+
 # Stockish
-An Educational stock simulator app based on Spikecode' [Stotra](https://github.com/spikecodes/stotra). Set up in 24 hours for a coding marathon.
+An Educational stock simulator app based on Spikecodes' [Stotra](https://github.com/spikecodes/stotra). Set up in 24 hours for a coding marathon.
 
 ## Features
 
@@ -30,12 +32,12 @@ npm install tunnelmole
 cd framework/app
 ```
   ```node
-  npm run dev
+npm run dev
 ```
 2. Go to server dir and run
-   ```node
-   cd framework/server
-   ```
+  ```node
+cd framework/server
+```
 3. Run tmole
  ```node
 tmole 5173
