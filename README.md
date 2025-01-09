@@ -1,5 +1,5 @@
 # Stockish
-An Educational stock simulator app based on Stotra. Set up in 24 hours for a coding marathon.
+An Educational stock simulator app based on Spikecode' [Stotra](https://github.com/spikecodes/stotra). Set up in 24 hours for a coding marathon.
 
 ## Features
 
