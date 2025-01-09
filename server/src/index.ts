@@ -11,7 +11,7 @@ const app: Express = express();
 dotenv.config();
 
 const PORT = process.env.PORT || 3010;
-app.set('trust proxy', true);
+
 // Docs
 const { swaggerDocs } = require("./utils/swagger");
 
