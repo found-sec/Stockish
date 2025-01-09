@@ -75,9 +75,6 @@ function App() {
 				</Box>
 			</Container>
 			<Box textAlign="center" py="10">
-				<Text fontSize="sm" color="gray.500">
-					Built and developed by Ashish and Anas
- 				</Text>
 				 <Text fontSize="sm" color="gray.500">
 					Made by  <Link href="https://github.com/SnowyCrest" fontWeight="bold" target="_blank" rel="noopener noreferrer">
 					SnowyCrest 
