@@ -13,7 +13,7 @@ dotenv.config();
 const PORT = process.env.PORT || 3010;
 
 // Docs
-// const { swaggerDocs } = require("./utils/swagger");
+const { swaggerDocs } = require("./utils/swagger");
 
 // Database
 const Database = require("./utils/db");
@@ -47,7 +47,7 @@ const loginLimiter = rateLimit({
 
 // Apply the rate limiters
 app.use("/api/", apiLimiter); // General API rate limiter
-// app.use("/api/auth/login", loginLimiter); // Uncomment for login-specific rate limiting
+app.use("/api/auth/login", loginLimiter); // Uncomment for login-specific rate limiting
 
 
 // REST Routes
@@ -56,5 +56,5 @@ app.use(require("./routes"));
 // Start server
 app.listen(PORT, async () => {
 	
-	// swaggerDocs(app, PORT);
+	swaggerDocs(app, PORT);
 });

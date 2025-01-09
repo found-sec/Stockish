@@ -8,7 +8,7 @@ export default defineConfig({
 		host: "0.0.0.0",
 		proxy: {
 			"/api": {
-				target: "http://0.0.0.0:3010",
+				target: "https://stockish-backend.onrender.com",
 				changeOrigin: false,
 				secure: false,  //set to true in production
 				ws: true,
