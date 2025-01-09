@@ -1,60 +1,54 @@
-const morgan = require("morgan"); // Import morgan
-const { log } = require("mercedlogger"); // Import mercedlogger's log function
-const cors = require("cors");
-const rateLimit = require("express-rate-limit").rateLimit;
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+import morgan from "morgan"; // Import morgan
+import cors from "cors"; // Import CORS
+import rateLimit from "express-rate-limit"; // Import rate limit
 
-
-// Config/initialization
-const app: Express = express();
+// Load environment variables from .env file
 dotenv.config();
 
+// App initialization
+const app: Express = express();
 const PORT = process.env.PORT || 3010;
 
-// Docs
-// const { swaggerDocs } = require("./utils/swagger");
+// CORS setup
+const allowedOrigins = [
+  "http://localhost:3000", // Frontend during local development
+  "https://stockish.vercel.app", // Deployed frontend on Vercel
+  "https://stockish-backend.onrender.com", // Backend URL if using Render
+];
 
-// Database
-const Database = require("./utils/db");
-const UserSchema = require("./models/user.model");
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
 
-// Middleware
-app.use(cors());
+// Logging setup with morgan
 app.use(morgan("tiny"));
 app.use(express.json());
 
-
-// Ratelimiting
+// Rate Limiting
 const apiLimiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 250, // Limit each IP to 250 requests per `window` (here, per 15 minutes)
-	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 250, // Limit each IP to 250 requests per window
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-const loginLimiter = rateLimit({
-	windowMs: 30 * 60 * 1000, // 30 minutes
-	max: 15, // Limit each IP to 15 login requests per `window` (here, per 30 minutes)
-	message:
-		"Too many login attempts from this IP, please try again after an hour.",
-	standardHeaders: true,
-	legacyHeaders: false,
-});
-
-
-
-
-// Apply the rate limiters
+// Apply the rate limiter to the API routes
 app.use("/api/", apiLimiter); // General API rate limiter
-// app.use("/api/auth/login", loginLimiter); // Uncomment for login-specific rate limiting
 
-
-// REST Routes
+// Routes setup (Ensure your routes are properly defined in "./routes")
 app.use(require("./routes"));
 
-// Start server
-app.listen(PORT, async () => {
-	
-	// swaggerDocs(app, PORT);
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
