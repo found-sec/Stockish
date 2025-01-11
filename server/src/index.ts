@@ -20,7 +20,10 @@ const Database = require("./utils/db");
 const UserSchema = require("./models/user.model");
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://stockish.vercel.app",  // Replace with your actual frontend URL
+}));
+
 app.use(morgan("tiny"));
 app.use(express.json());
 
