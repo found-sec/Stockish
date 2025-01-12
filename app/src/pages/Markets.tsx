@@ -29,7 +29,7 @@ const Markets: React.FC = () => {
       showToolbar: true,
       colorTheme: "light",
       locale: "en",
-      largeChartUrl: "http://localhost:5173/stocks/TSLA",
+      largeChartUrl: "http://stockish.vercel.app/stocks/TSLA",
       isTransparent: true,
     });
 
@@ -67,7 +67,7 @@ const Markets: React.FC = () => {
       dateRange: "12M",
       showChart: true,
       locale: "en",
-      largeChartUrl: "http://localhost:5173/stocks/",
+      largeChartUrl: "http://stockish.vercel.app/stocks/",
       isTransparent: true,
       showSymbolLogo: true,
       showFloatingTooltip: true,
@@ -111,7 +111,7 @@ const Markets: React.FC = () => {
       isTransparent: true,
       colorTheme: "light",
       locale: "en",
-      largeChartUrl: "http://localhost:5173/stocks/AMZN",
+      largeChartUrl: "http://stockish.vercel.app/stocks/AMZN",
     });
 
     // Create script for TradingView single quote widget (for Tesla)
@@ -124,7 +124,7 @@ const Markets: React.FC = () => {
       isTransparent: true,
       colorTheme: "light",
       locale: "en",
-      largeChartUrl: "http://localhost:5173/stocks/TSLA",
+      largeChartUrl: "http://stockish.vercel.app/stocks/TSLA",
     });
 
     // Create script for TradingView single quote widget (for Apple)
@@ -137,7 +137,7 @@ const Markets: React.FC = () => {
       isTransparent: true,
       colorTheme: "light",
       locale: "en",
-      largeChartUrl: "http://localhost:5173/stocks/AAPL",
+      largeChartUrl: "http://stockish.vercel.app/stocks/AAPL",
     });
 
     // Create script for TradingView single quote widget (for Microsoft)
@@ -150,7 +150,7 @@ const Markets: React.FC = () => {
       isTransparent: true,
       colorTheme: "light",
       locale: "en",
-      largeChartUrl: "http://localhost:5173/stocks/MSFT",
+      largeChartUrl: "http://stockish.vercel.app/stocks/MSFT",
     });
 
     // Create script for TradingView single quote widget (for NVIDIA)
@@ -163,7 +163,7 @@ const Markets: React.FC = () => {
       isTransparent: true,
       colorTheme: "light",
       locale: "en",
-      largeChartUrl: "http://localhost:5173/stocks/NVDA",
+      largeChartUrl: "http://stockish.vercel.app/stocks/NVDA",
     });
 
     // Append all scripts to their respective containers when the component mounts
