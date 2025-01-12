@@ -115,7 +115,7 @@ export default function Navbar() {
 
 							<DrawerBody>
 								<Stack spacing="2.5">
-									<Text as={Link} to="/">
+									<Text as={Link} to="/dashboard">
 										<Text>Dashboard</Text>
 									</Text>
 									<Text as={Link} to="/markets">
