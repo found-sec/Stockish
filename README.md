@@ -27,14 +27,14 @@ npm install tunnelmole
 ## Running the website on localhost
 1. Go to app dir and run
   ```node
-cd framework/app
+cd /app
 ```
   ```node
 npm run dev
 ```
 2. Go to server dir and run
   ```node
-cd framework/server
+cd /server
 ```
 3. Run tmole
  ```node
