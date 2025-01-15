@@ -49,36 +49,41 @@ function timeSince(date: string) {
   return "Just now";
 }
 
-function Newsfeed({ symbol }: { symbol: string }) {
+function Newsfeed(props: { symbol?: string }) {
   const [isLoading, setIsLoading] = useState(true);
   const [news, setNews] = useState<NewsItem[]>([]);
 
-  const theme = useTheme();
-  const accentColor = theme?.components?.Link?.baseStyle?.color?.split(".")[0] || "blue";
+  const accentColor =
+    useTheme()["components"]["Link"]["baseStyle"]["color"].split(".")[0];
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get(`/api/news/${symbol || ""}`);
-        const data = response.data;
+        const endpoint = props.symbol
+          ? `/api/news/${props.symbol}` // If a symbol is passed, call the specific endpoint
+          : `/api/news`; // Otherwise, load general news for the dashboard
 
-        // Ensure data is an array before setting it to state
-        if (Array.isArray(data)) {
-          setNews(data.slice(0, 9)); // Slice to the first 9 items
+        const response = await axios.get(endpoint);
+
+        if (response.headers["content-type"]?.includes("application/json")) {
+          const data = response.data;
+          if (Array.isArray(data)) {
+            setNews(data.slice(0, 9)); // Take the first 9 items
+          } else {
+            console.error("News data is not an array:", data);
+          }
         } else {
-          console.error("News data is not an array", data);
-          setNews([]);
+          console.error("API did not return JSON:", response.data);
         }
       } catch (error) {
         console.error("Error fetching news:", error);
-        setNews([]);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchNews();
-  }, [symbol]);
+  }, [props.symbol]);
 
   if (isLoading) {
     return (
@@ -89,13 +94,17 @@ function Newsfeed({ symbol }: { symbol: string }) {
   }
 
   return (
-    <SimpleGrid spacing={5} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
+    <SimpleGrid
+      spacing={1}
+      templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
+      gap={5}
+    >
       {news.map((item) => (
         <Card maxW="sm" h="100%" key={item.title}>
           <CardHeader fontSize="sm" pb={2} display="flex" gap="2">
             <Text whiteSpace="nowrap">{timeSince(item.publishedAt)}</Text>
             <Text
-              color={`${accentColor}.500`}
+              color={accentColor + ".500"}
               fontWeight="500"
               textOverflow="ellipsis"
               overflow="hidden"
@@ -118,10 +127,7 @@ function Newsfeed({ symbol }: { symbol: string }) {
                     textOverflow="ellipsis"
                     display="-webkit-box"
                     overflow="hidden"
-                    css={{
-                      WebkitLineClamp: 3,
-                      WebkitBoxOrient: "vertical",
-                    }}
+                    css="-webkit-line-clamp: 3; -webkit-box-orient: vertical;"
                   >
                     {item.title}
                   </Heading>
@@ -130,10 +136,7 @@ function Newsfeed({ symbol }: { symbol: string }) {
                     textOverflow="ellipsis"
                     display="-webkit-box"
                     overflow="hidden"
-                    css={{
-                      WebkitLineClamp: 6,
-                      WebkitBoxOrient: "vertical",
-                    }}
+                    css="-webkit-line-clamp: 6; -webkit-box-orient: vertical;"
                   >
                     {item.description}
                   </Text>
