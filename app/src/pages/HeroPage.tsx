@@ -29,7 +29,7 @@ export default function HeroPage() {
             position="relative"
           >
             <Image
-              src="/hackathon_logo.svg"
+              src="/Logo.svg"
               alt="Stockish Logo"
               boxSize={{ base: "70px", md: "140px" }}
               mr={{ base: 5, md: 18 }}
