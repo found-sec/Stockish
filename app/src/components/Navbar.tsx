@@ -48,7 +48,7 @@ export default function Navbar() {
 			{/* left side */}
 			<Flex align="center" gap={30}>
 				<Text as={Link} to="/" display="flex" alignItems="center" gap="1">
-					<Image src="/hackathon_logo.svg" alt="Stotra Logo" boxSize="12" />
+					<Image src="/Logo.svg" alt="Stotra Logo" boxSize="12" />
 					{/* alternatively, try: <Image src={process.env.PUBLIC_URL + '/hackathon_logo.svg'} alt="Stotra Logo" boxSize="6" /> */}
 					<Text fontWeight="bold">Stock-ish</Text>
 				</Text>
