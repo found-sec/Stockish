@@ -35,7 +35,7 @@ function Leaderboard() {
 	// Function to fetch leaderboard data
 	const fetchLeaderboard = () => {
 		axios
-			.get(`/api/user/leaderboard?timestamp=${Date.now()}`)
+			.get(`https://stockish-backend.onrender.com/api/user/leaderboard?timestamp=${Date.now()}`)
 			.then((res) => {
 				setLeaderboard(res.data.users);
 				console.log("Fetched leaderboard data:", res.data.users);
