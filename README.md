@@ -1,30 +1,50 @@
-# Stockish
-An Educational stock simulator app based on Spikecodes' [Stotra](https://github.com/spikecodes/stotra). Set up in 24 hours at a coding marathon.
+# Stockish 📈  
+An educational stock simulator app inspired by Spikecodes' [Stotra](https://github.com/spikecodes/stotra). Built within 24 hours during a coding marathon.  
+![NIAstock_Embed](https://github.com/user-attachments/assets/5e30bf39-1016-4295-b390-87e05a55266a)
 
-## Features
+---
 
-- Real-time inventory tracking
-- Automated stock level alerts
-- Detailed reporting and analytics
-- User-friendly interface
-- Integration with popular e-commerce platforms
+## ✨ Features  
+- 📊 **Real-time inventory tracking**  
+- 🚨 **Automated stock level alerts**  
+- 📑 **Detailed reporting and analytics**  
+- 🖥️ **User-friendly interface**  
+- 🛍️ **Integration with popular e-commerce platforms**  
 
-## Getting Started:
-Clone this repo:
-```node
-  git clone https://github.com/foundsec/Stockish.git
+---
+
+##🚀 Getting Started  
+### Clone this repository:  
+```bash
+git clone https://github.com/foundsec/Stockish.git
+
 ```
-## Prerequisites
-1. Install Chakra UI (Preferably 3.0.1)
+## 🛠️ Prerequisites
+1.Install node modules in root
 ```node
-npm install @chakra-ui/react@3.0.1`
+cd Stockish
 ```
-3. Install Tunnelmole
 ```node
-npm install tunnelmole
+npm install
 ```
 
-## Running the website on localhost
+2.Install node modules in server
+```node
+cd server
+```
+```node
+npm install
+```
+2. Install node modules in app
+ ```node
+cd app
+```
+```node
+npm install
+```
+
+
+##🖥️ Running the website on localhost
 1. Go to app dir and run
   ```node
 cd /app
@@ -36,9 +56,4 @@ npm run dev
   ```node
 cd /server
 ```
-3. Run tmole
- ```node
-tmole 5173
-```
-
 
