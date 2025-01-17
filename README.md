@@ -13,7 +13,7 @@ An educational stock simulator app inspired by Spikecodes' [Stotra](https://gith
 
 ---
 
-##🚀 Getting Started  
+## 🚀 Getting Started  
 ### Clone this repository:  
 ```bash
 git clone https://github.com/foundsec/Stockish.git
@@ -44,7 +44,7 @@ npm install
 ```
 
 
-##🖥️ Running the website on localhost
+## 🖥️ Running the website on localhost
 1. Go to app dir and run
   ```node
 cd /app
