@@ -14,7 +14,7 @@ const HowToTrade: React.FC = () => {
   const cardImages = [
     "https://www.investopedia.com/thmb/4MXyI1WRNrKV0jNmBuZ81sQKnX8=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/stockmarket.asp-d2f34bb1e91444069bc6e9b24cfdf6e8.jpg",
     "https://www.investopedia.com/thmb/gz7z6CgH_EnmtN_IgL5eDVSalSw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Primary-Image-how-to-invest-in-esg-in-2023-7499371-35a96ba3de4247538dd0f95dc43f9103.jpg",
-    "https://cdn.corporatefinanceinstitute.com/assets/stock-analysis.jpeg",
+    "https://cdn.corporatefinanceinstitute.com/assets/stock-analysis.jpeg", 
     // "/path/to/options-intro-image.jpg",
     // "/path/to/portfolio-image.jpg",
     // "/path/to/options-strategies-image.jpg"
