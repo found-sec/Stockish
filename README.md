@@ -56,4 +56,7 @@ npm run dev
   ```node
 cd /server
 ```
+  ```node
+npm run dev
+```
 
