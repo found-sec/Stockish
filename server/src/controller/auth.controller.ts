@@ -68,7 +68,7 @@ const signup = (req: Request, res: Response) => {
                 watchlist: [],
                 ledger: [],
                 positions: [],
-                cash: 100_00,
+                cash: 300_00,
             });
 
             newUser
