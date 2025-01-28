@@ -96,7 +96,7 @@ export default function Login() {
 						status: "success",
 						isClosable: true,
 					});
-					navigate("/");
+					navigate("/dashboard");
 				} else {
 					toast({
 						title: `${res}`,
