@@ -49,7 +49,7 @@ export default function Navbar() {
 			<Flex align="center" gap={30}>
 				<Text as={Link} to="/" display="flex" alignItems="center" gap="1">
 					<Image src="/Logo.svg" alt="Stotra Logo" boxSize="12" />
-					{/* alternatively, try: <Image src={process.env.PUBLIC_URL + '/hackathon_logo.svg'} alt="Stotra Logo" boxSize="6" /> */}
+				
 					<Text fontWeight="bold">Stock-ish</Text>
 				</Text>
 				<NavLink
@@ -109,7 +109,7 @@ export default function Navbar() {
 							<DrawerCloseButton />
 							<DrawerHeader>
 								<Text as={Link} to="/">
-									<Text fontWeight="bold">NIAstock</Text>
+									<Text fontWeight="bold">Stockish</Text>
 								</Text>
 							</DrawerHeader>
 
