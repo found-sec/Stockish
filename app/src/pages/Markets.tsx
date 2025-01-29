@@ -29,7 +29,7 @@ const Markets: React.FC = () => {
       showToolbar: true,
       colorTheme: "light",
       locale: "en",
-      largeChartUrl: "http://stockish.vercel.app/stocks/TSLA",
+      largeChartUrl: "http://stockish.vercel.app/stocks/",
       isTransparent: true,
     });
 
