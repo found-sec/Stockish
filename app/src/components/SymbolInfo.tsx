@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { getFormattedSymbol } from '../utils/symbolUtils';
-import symbolMap from "../../../server/src/utils/symbolMap";
 
 interface SymbolInfoProps {
   symbol: string;

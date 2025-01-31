@@ -3,39 +3,39 @@ import { Box, Heading, Flex, Text, SimpleGrid, Link, Image } from '@chakra-ui/re
 
 const HowToTrade: React.FC = () => {
   const cardTitles = [
-    "Introduction to Stocks", 
-    "Stock Trading Basics",
-    "Stock Research",
-    "Introduction to Options",
-    "Managing a Portfolio",
-    "Options Strategies"
+    "Investing: An Introduction", 
+    "How To Start Investing in Stocks in 2025 and Beyond",
+    "Investing vs. Trading: What's the Difference?",
+    "Bonds: How They Work and How To Invest",
+    "Options vs. Futures: What’s the Difference?",
+    "Managing a Portfolio"
   ];
 
   const cardImages = [
-    "https://www.investopedia.com/thmb/4MXyI1WRNrKV0jNmBuZ81sQKnX8=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/stockmarket.asp-d2f34bb1e91444069bc6e9b24cfdf6e8.jpg",
-    "https://www.investopedia.com/thmb/gz7z6CgH_EnmtN_IgL5eDVSalSw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Primary-Image-how-to-invest-in-esg-in-2023-7499371-35a96ba3de4247538dd0f95dc43f9103.jpg",
-    "https://cdn.corporatefinanceinstitute.com/assets/stock-analysis.jpeg", 
-    // "/path/to/options-intro-image.jpg",
-    // "/path/to/portfolio-image.jpg",
-    // "/path/to/options-strategies-image.jpg"
+    "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1612010167108-3e6b327405f0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1601382270349-49c15bddf738?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
+    "https://images.unsplash.com/photo-1534469650761-fce6cc26ac0d?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1560221328-12fe60f83ab8?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   ];
 
   const cardLinks = [
-    "https://www.investopedia.com/terms/s/stockmarket.asp",
-    "https://www.investopedia.com/ask/answers/12/difference-investing-trading.asphttps://example.com/trading-basics",
+    "https://www.investopedia.com/articles/basics/11/3-s-simple-investing.asp",
+    "https://www.investopedia.com/articles/basics/06/invest1000.asp",
     "https://www.investopedia.com/articles/basics/09/become-your-own-stock-analyst.asp",
-    "https://example.com/options-intro",  
-    "https://example.com/portfolio-management",
-    "https://example.com/options-strategies"
+    "https://www.investopedia.com/terms/b/bond.asp",  
+    "https://www.investopedia.com/ask/answers/difference-between-options-and-futures/",
+    "https://www.investopedia.com/investing/importance-diversification/"
   ];
 
   const cardDescriptions = [
-    "Learn the fundamentals of stock markets, including what stocks are and how they work.",
-    "Master the essential concepts and techniques for successful stock trading.",
-    "Discover how to research and analyze stocks to make informed investment decisions.",
-    "Understand the basics of options trading and how to get started.",
-    "Learn effective strategies for building and managing your investment portfolio.",
-    "Explore advanced options trading strategies to maximize your potential returns."
+    "The investment landscape can be extremely dynamic and ever-evolving. But those who take the time to understand the basic principles and the different asset classes stand to gain significantly over the long haul.",
+    "Investing in stocks can be a powerful way to grow your wealth over time. It involves buying shares in a company with the hope that the company will grow and perform well in the stock market for the long term, resulting in gains on your investment. ",
+    "Investing and trading are two different methods of attempting to profit in the financial markets. Both investors and traders seek profits through market participation. ",
+    "Bonds are used by companies, municipalities, states, and sovereign governments to finance projects and operations.",
+    "Options and futures are derivatives that let investors speculate or hedge risk by agreeing to buy assets at preset prices and dates, though they operate under different rules and risk levels.",
+    "By holding a variety of investments and having a diverse portfolioc, the poor performance of any one investment potentially can be offset by the better performance of another, leading to a more consistent overall return."
   ];
 
   return (
@@ -150,7 +150,11 @@ const HowToTrade: React.FC = () => {
         <Heading as="h2" size="xl" fontWeight="bold" my={8}>
           Trading Articles
         </Heading>
-        <SimpleGrid columns={3} spacing={6}>
+        <SimpleGrid 
+          columns={{ base: 1, md: 2, lg: 3 }} 
+          spacing={{ base: 4, md: 6 }}
+          mx={{ base: 2, md: 0 }}
+        >
           {Array.from({ length: 6 }).map((_, index) => (
             <Link 
               key={index} 
