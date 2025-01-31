@@ -13,6 +13,7 @@ const HowToTrade = lazy(() => import("./pages/HowToTrade"));
 
 import NotFound from "./pages/NotFound";
 import HeroPage from "./pages/HeroPage";
+import Footer from "./components/Footer";
 
 export type Transaction = {
 	symbol: string;
@@ -74,17 +75,7 @@ function App() {
 					</Suspense>
 				</Box>
 			</Container>
-			<Box textAlign="center" py="10">
-				 <Text fontSize="sm" color="gray.500">
-					Made by  <Link href="https://github.com/SnowyCrest" fontWeight="bold" target="_blank" rel="noopener noreferrer">
-					SnowyCrest 
-					</Link>
-					, and <Link href="https://github.com/found-sec" fontWeight="bold" target="_blank" rel="noopener noreferrer">
-						FoundSec
-					</Link> 
- 				</Text>
-			</Box>
-			
+			<Footer />
 		</>
 	);
 }
