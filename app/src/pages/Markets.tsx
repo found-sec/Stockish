@@ -21,15 +21,14 @@ const Markets: React.FC = () => {
     screenerScript.src = "https://s3.tradingview.com/external-embedding/embed-widget-screener.js";
     screenerScript.async = true;
     screenerScript.innerHTML = JSON.stringify({
-      width: "100%", // Set width to 100% for responsiveness
-      height: "600", // Increased height for thickness
+      width: "100%", 
+      height: "600",
       defaultColumn: "overview",
       defaultScreen: "most_capitalize",
       market: "america",
       showToolbar: true,
       colorTheme: "light",
       locale: "en",
-      largeChartUrl: "http://stockish.vercel.app/stocks/TSLA",
       isTransparent: true,
     });
 
@@ -67,7 +66,6 @@ const Markets: React.FC = () => {
       dateRange: "12M",
       showChart: true,
       locale: "en",
-      largeChartUrl: "http://stockish.vercel.app/stocks/",
       isTransparent: true,
       showSymbolLogo: true,
       showFloatingTooltip: true,
