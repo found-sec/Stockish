@@ -31,4 +31,4 @@ server/src/swagger-output.json
 server/.env
 
 #swagger
-server/src/swagger-output.json
+server/swagger-output.json
