@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Flex, HStack, Image, Link, Text, Icon, Divider } from "@chakra-ui/react";
+import { Box, Container, Flex, Image, Link, Text, Icon, Divider } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa";
 
 const Footer = () => {
@@ -9,6 +9,7 @@ const Footer = () => {
       bgGradient="linear(to-r,rgb(15, 64, 80),rgb(12, 53, 92))"
       color="white"
       py={12}
+      mt={32} // So genius I forgot to add this
     >
       <Container maxW="container.xl">
         <Flex 
@@ -56,6 +57,22 @@ const Footer = () => {
               >
                 Learn trading by experience, without the cost.
               </Text>
+              <Text 
+                fontSize={{ base: "md", md: "m" }} 
+                color="gray.300"
+                ml={{ base: 0, md: 3 }}
+                px={{ base: 4, md: 0 }}
+                mt={12}
+              >
+                Found a bug or need help? Contact us{" "}
+                <Link
+                  href="mailto:anas.timeridjine@gmail.com" // Can't wait to get ~200 emails
+                  color="blue.300"
+                  _hover={{ color: "blue.200" }}
+                >
+                  here.
+                </Link>
+              </Text>
             </Flex>
           </Box>
 
@@ -91,7 +108,7 @@ const Footer = () => {
             direction="column" 
             align={{ base: "center", md: "start" }} 
             gap={6}
-            pl={{ base: 0, md: 8 }}  // Reduced left padding to accommodate divider
+            pl={{ base: 0, md: 8 }} 
             maxW={{ base: "100%", md: "45%" }}
           >
             <Box width="100%">
