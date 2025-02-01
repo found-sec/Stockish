@@ -9,7 +9,7 @@ const Footer = () => {
       bgGradient="linear(to-r,rgb(15, 64, 80),rgb(12, 53, 92))"
       color="white"
       py={12}
-      mt={32}
+      mt={32} // So genius I forgot to add this
     >
       <Container maxW="container.xl">
         <Flex 
@@ -56,6 +56,22 @@ const Footer = () => {
                 px={{ base: 4, md: 0 }}
               >
                 Learn trading by experience, without the cost.
+              </Text>
+              <Text 
+                fontSize={{ base: "md", md: "m" }} 
+                color="gray.300"
+                ml={{ base: 0, md: 3 }}
+                px={{ base: 4, md: 0 }}
+                mt={12}
+              >
+                Found a bug or need help? Contact us{" "}
+                <Link
+                  href="mailto:anas.timeridjine@gmail.com" // Can't wait to get ~200 emails
+                  color="blue.300"
+                  _hover={{ color: "blue.200" }}
+                >
+                  here.
+                </Link>
               </Text>
             </Flex>
           </Box>
