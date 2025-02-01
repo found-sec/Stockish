@@ -29,3 +29,6 @@ server/src/swagger-output.json
 
 # Secrets
 server/.env
+
+#swagger
+server/src/swagger-output.json
