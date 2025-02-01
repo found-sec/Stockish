@@ -13,6 +13,7 @@ import {
 	Tr,
 	useTheme,
 } from "@chakra-ui/react";
+import LeaderboardSkeleton from "../components/skeletons/LeaderboardSkeleton";
 
 interface LeaderboardUser {
 	username: string;
@@ -27,6 +28,7 @@ const format = new Intl.NumberFormat("en-US", {
 function Leaderboard() {
 	const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
 	const [searchQuery, setSearchQuery] = useState("");
+	const [isLoading, setIsLoading] = useState(true);
 
 	// Use theme for accent color
 	let accentColor =
@@ -34,13 +36,18 @@ function Leaderboard() {
 
 	// Function to fetch leaderboard data
 	const fetchLeaderboard = () => {
+		setIsLoading(true);
 		axios
 			.get(`/api/user/leaderboard?timestamp=${Date.now()}`)
 			.then((res) => {
 				setLeaderboard(res.data.users);
+				setIsLoading(false);
 				console.log("Fetched leaderboard data:", res.data.users);
 			})
-			.catch((err) => console.log("Error fetching leaderboard data:", err));
+			.catch((err) => {
+				console.log("Error fetching leaderboard data:", err);
+				setIsLoading(false);
+			});
 	};
 
 	// Fetch data when the component mounts and set up periodic updates
@@ -62,6 +69,10 @@ function Leaderboard() {
 	const filteredLeaderboard = leaderboard.filter((user) =>
 		user.username.toLowerCase().includes(searchQuery.toLowerCase())
 	);
+
+	if (isLoading) {
+		return <LeaderboardSkeleton />;
+	}
 
 	return (
 		<Box className="leaderboard">

@@ -8,7 +8,6 @@ import {
   Heading,
   Stack,
   Link,
-  Spinner,
   useTheme,
   CardFooter,
   Tag,
@@ -16,6 +15,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import axios from "axios";
+import NewsCardSkeleton from "./skeletons/NewsCardSkeleton";
 
 interface NewsItem {
   title: string;
@@ -87,9 +87,14 @@ function Newsfeed(props: { symbol?: string }) {
 
   if (isLoading) {
     return (
-      <Stack align="center" justify="center" h="100%">
-        <Spinner />
-      </Stack>
+      <SimpleGrid
+        spacing={1}
+        templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
+        gap={5}>
+        {[...Array(9)].map((_, i) => (
+          <NewsCardSkeleton key={i} />
+        ))}
+      </SimpleGrid>
     );
   }
 
@@ -97,8 +102,7 @@ function Newsfeed(props: { symbol?: string }) {
     <SimpleGrid
       spacing={1}
       templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
-      gap={5}
-    >
+      gap={5}>
       {news.map((item) => (
         <Card maxW="sm" h="100%" key={item.title}>
           <CardHeader fontSize="sm" pb={2} display="flex" gap="2">
@@ -108,8 +112,7 @@ function Newsfeed(props: { symbol?: string }) {
               fontWeight="500"
               textOverflow="ellipsis"
               overflow="hidden"
-              whiteSpace="nowrap"
-            >
+              whiteSpace="nowrap">
               {item.source}
             </Text>
           </CardHeader>
@@ -117,8 +120,7 @@ function Newsfeed(props: { symbol?: string }) {
             href={item.sourceUrl}
             color="inherit"
             isExternal
-            _hover={{ textDecoration: "none" }}
-          >
+            _hover={{ textDecoration: "none" }}>
             <CardBody pt={0} h="100%">
               <HStack align="flex-start" spacing={4}>
                 <Stack flex="1">
@@ -127,8 +129,7 @@ function Newsfeed(props: { symbol?: string }) {
                     textOverflow="ellipsis"
                     display="-webkit-box"
                     overflow="hidden"
-                    css="-webkit-line-clamp: 3; -webkit-box-orient: vertical;"
-                  >
+                    css="-webkit-line-clamp: 3; -webkit-box-orient: vertical;">
                     {item.title}
                   </Heading>
                   <Text
@@ -136,8 +137,7 @@ function Newsfeed(props: { symbol?: string }) {
                     textOverflow="ellipsis"
                     display="-webkit-box"
                     overflow="hidden"
-                    css="-webkit-line-clamp: 6; -webkit-box-orient: vertical;"
-                  >
+                    css="-webkit-line-clamp: 6; -webkit-box-orient: vertical;">
                     {item.description}
                   </Text>
                 </Stack>
@@ -165,8 +165,7 @@ function Newsfeed(props: { symbol?: string }) {
                     href={`/stocks/${symbol}`}
                     key={symbol}
                     colorScheme={accentColor}
-                    size="sm"
-                  >
+                    size="sm">
                     {symbol}
                   </Tag>
                 ))}
