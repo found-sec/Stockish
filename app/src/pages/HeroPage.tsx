@@ -88,7 +88,7 @@ export default function HeroPage() {
               <Heading
                 as="h1"
                 size="4xl"
-                fontSize={{ base: "6xl", md: "9xl" }}
+                fontSize={{ base: "4xl", md: "8xl" }}
                 fontWeight="extrabold"
               >
                 {displayText}
