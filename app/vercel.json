@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://stockish-backend.onrender.com/api/:path*"
+      "destination": "https://stockish.onrender.com/api/:path*"
     },
     {
       "source": "/(.*)",
