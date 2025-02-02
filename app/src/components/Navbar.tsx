@@ -50,31 +50,31 @@ export default function Navbar() {
 				<Text as={Link} to="/" display="flex" alignItems="center" gap="1">
 					<Image src="/Logo.svg" alt="Stotra Logo" boxSize="12" />
 				
-					<Text fontWeight="bold">Stock-ish</Text>
+					<Text fontWeight="bold">Stockish</Text>
 				</Text>
 				<NavLink
 					style={({ isActive }) => ({ fontWeight: isActive ? "500" : "" })}
 					to="/dashboard"
 				>
-					<Text display={{ base: "none", md: "block" }}>Dashboard</Text>
+					<Text display={{ base: "none", lg: "block" }}>Dashboard</Text>
 				</NavLink>
 				<NavLink
 					style={({ isActive }) => ({ fontWeight: isActive ? "500" : "" })}
 					to="/markets"
 				>
-					<Text display={{ base: "none", md: "block" }}>Markets</Text>
+					<Text display={{ base: "none", lg: "block" }}>Markets</Text>
 				</NavLink>
 				<NavLink
 					style={({ isActive }) => ({ fontWeight: isActive ? "500" : "" })}
 					to="/leaderboard"
 				>
-					<Text display={{ base: "none", md: "block" }}>Leaderboard</Text>
+					<Text display={{ base: "none", lg: "block" }}>Leaderboard</Text>
 				</NavLink>
 				<NavLink
 					style={({ isActive }) => ({ fontWeight: isActive ? "500" : "" })} 
 					to="/howtotrade"
 				>
-					<Text display={{ base: "none", md: "block" }}>Guide</Text>
+					<Text display={{ base: "none", lg: "block" }}>Guide</Text>
 				</NavLink>
 			</Flex>
 
@@ -85,7 +85,7 @@ export default function Navbar() {
 
 			{/* right Side */}
 			<Box>
-				<HStack spacing="2" display={{ base: "none", md: "flex" }}>
+				<HStack spacing="2" display={{ base: "none", lg: "flex" }}>
 					{/* <IconButton
 						variant="outline"
 						aria-label="Toggle dark mode"
@@ -95,7 +95,7 @@ export default function Navbar() {
 					<AccountMenu />
 				</HStack>
 
-				<Box display={{ base: "block", md: "none" }}>
+				<Box display={{ base: "block", lg: "none" }}>
 					<IconButton
 						aria-label="Hamburger menu"
 						icon={<HamburgerIcon />}
