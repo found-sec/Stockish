@@ -25,29 +25,29 @@ const cursorPulse = keyframes`
   100% { border-right-color: #4cd6e9 }
 `;
 
-function useTypewriter(text: string, speed: number = 150) {
+function useTypewriter(text: string, speed: number) {
   const [displayText, setDisplayText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    let i = 0;
-    const timer = setInterval(() => {
-      if (i < text.length) {
-        setDisplayText(prev => prev + text.charAt(i));
-        i++;
-      } else {
-        clearInterval(timer);
-      }
+    if (currentIndex >= text.length) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setDisplayText(text.substring(0, currentIndex + 1));
+      setCurrentIndex(prev => prev + 1);
     }, speed);
 
-    return () => clearInterval(timer);
-  }, [text, speed]);
+    return () => clearTimeout(timer);
+  }, [text, speed, currentIndex]);
 
   return displayText;
 }
 
 export default function HeroPage() {
   const navigate = useNavigate();
-  const displayText = useTypewriter('Stoockish', 100); // Sorry I had to add the extra O or else the heading becomes "Stckish" :/
+  const displayText = useTypewriter('Stockish', 100);
 
   const fadeInVariant = {
     hidden: { opacity: 0, y: 20 },

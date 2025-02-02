@@ -58,47 +58,58 @@ function StockView() {
       {stock.regularMarketPrice > 0 && (
         <Flex direction={{ base: "column", md: "row" }} width="100%" gap={4}>
           <Box width="100%">
-            <Flex justifyContent="space-between" alignItems="center" mb={4}>
-              <Box flex="2" width="100%">
+            <Flex 
+              justifyContent="space-between" 
+              alignItems="center" 
+              mb={4}
+              flexDirection={{ base: "column", sm: "row" }}
+              gap={2}
+            >
+              <Box width="100%">
                 <SymbolInfoWidget symbol={mappedSymbol} width="100%" />
               </Box>
-              {tokens.isAuthenticated() &&
-                (onWatchlist ? (
-                  <Button
-                    leftIcon={<MinusIcon />}
-                    variant={"outline"}
-                    onClick={() =>
-                      accounts
-                        .editWatchlist(symbol as string, "remove")
-                        .then(() => setOnWatchlist(false))
-                    }>
-                    Remove from Watchlist
-                  </Button>
-                ) : (
-                  <Button
-                    leftIcon={<AddIcon />}
-                    variant={"outline"}
-                    onClick={() =>
-                      accounts
-                        .editWatchlist(symbol as string, "add")
-                        .then(() => setOnWatchlist(true))
-                    }>
-                    Add to Watchlist
-                  </Button>
-                ))}
+              {tokens.isAuthenticated() && (
+                <Box flexShrink={0}>
+                  {onWatchlist ? (
+                    <Button
+                      leftIcon={<MinusIcon />}
+                      variant={"outline"}
+                      onClick={() =>
+                        accounts
+                          .editWatchlist(symbol as string, "remove")
+                          .then(() => setOnWatchlist(false))
+                      }>
+                      Remove from Watchlist
+                    </Button>
+                  ) : (
+                    <Button
+                      leftIcon={<AddIcon />}
+                      variant={"outline"}
+                      onClick={() =>
+                        accounts
+                          .editWatchlist(symbol as string, "add")
+                          .then(() => setOnWatchlist(true))
+                      }>
+                      Add to Watchlist
+                    </Button>
+                  )}
+                </Box>
+              )}
             </Flex>
 
             {/* Stock Chart */}
             <Box
               width="100%"
-              height="600px" // Ensure height is set correctly
+              height={{ base: "400px", md: "600px" }}
               mb={4}
-              minWidth="800px" // Set minimum width
+              minWidth={{ base: "300px", md: "800px" }}
+              maxWidth="100%"
+              overflow="hidden"
             >
               <StockChart
                 symbol={symbol as string}
                 width="100%"
-                height="100%" // Ensure height is set correctly
+                height="100%"
               />
             </Box>
 
@@ -124,7 +135,6 @@ function StockView() {
         </Flex>
       )}
 
-      {/* News Section - Outside the main Flex container */}
       <Heading size="md" mt={5}>
         {symbol as string} News
       </Heading>

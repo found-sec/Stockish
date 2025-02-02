@@ -79,11 +79,12 @@ function StockChart({
     <div 
       ref={container}
       style={{
-        width: "100%",
-        height: "100%",
+        width: width,
+        height: height,
         position: "relative",
         display: "block",
-        overflow: "hidden"
+        overflow: "hidden",
+        maxWidth: "100%"
       }}
     />
   );
