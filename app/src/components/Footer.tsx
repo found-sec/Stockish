@@ -151,7 +151,7 @@ const Footer = () => {
             </Box>
 
             <Link
-              href="https://github.com/SnowyCrest/Stockish"
+              href="https://github.com/found-sec/Stockish"
               isExternal
               display="flex"
               alignItems="center"
