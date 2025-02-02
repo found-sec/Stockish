@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import Navbar from "./components/Navbar";
+import MarketStatusBar from "./components/MarketStatusBar";
 import { Container, Box, Spacer, Text, Link, Spinner } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -47,6 +48,7 @@ function App() {
 	return (
 		<>
 			<Navbar />
+			 <MarketStatusBar />
 			<Container maxW="container.90vw">
 				<Spacer h="10" />
 				<Box>
