@@ -1,5 +1,5 @@
 # Stockish 📈  
-An educational stock simulator app inspired by Spikecodes' [Stotra](https://github.com/spikecodes/stotra). Built within 6 hours during a coding marathon.  
+An educational stock simulator app based on Spikecodes' [Stotra](https://github.com/spikecodes/stotra). Built within 6 hours during a coding marathon.  
 ![Atockish_Embed](https://github.com/user-attachments/assets/5e30bf39-1016-4295-b390-87e05a55266a)
 
 ---
