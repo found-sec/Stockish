@@ -2,7 +2,7 @@ import axios from "axios";
 import tokens from "./tokens.service";
 
 const baseURL = process.env.NODE_ENV === "production"
-  ? "https://stockish-backend.onrender.com/api"  // Production backend URL
+  ? "https://stockish.onrender.com/api"  // Production backend URL
   : ""; // Do nothing for development, or handle it in a different way if needed
 
 // Create the axios instance
