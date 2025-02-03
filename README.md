@@ -1,6 +1,7 @@
+![Atockish_Embed](https://github.com/user-attachments/assets/5e30bf39-1016-4295-b390-87e05a55266a)
+
 # Stockish 📈  
 An educational stock simulator app based on Spikecodes' [Stotra](https://github.com/spikecodes/stotra). Built within 6 hours during a coding marathon.  
-![Atockish_Embed](https://github.com/user-attachments/assets/5e30bf39-1016-4295-b390-87e05a55266a)
 
 ---
 
@@ -9,7 +10,34 @@ An educational stock simulator app based on Spikecodes' [Stotra](https://github.
 - 🚨 **Automated stock level alerts**  
 - 📑 **Detailed reporting and analytics**  
 - 🖥️ **User-friendly interface**  
-- 🛍️ **Integration with popular e-commerce platforms**  
+
+<table>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/27e65478-c729-4695-9d53-afe370df1ea6" width="300">
+      <br>Landing Page
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/9011391e-66ba-464c-a46a-9ccce5449092" width="300">
+      <br>Dashboard
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/944bacf1-9ebc-4147-a576-e00f9e91396d" width="300">
+      <br>Markets
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/39c175df-1c8f-4b2c-ba0e-a2a1d2f0c4d6" width="300">
+      <br>Leaderboard
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/a36f1d02-e18c-47e0-8278-226b0820d5e7" width="300">
+      <br>Guide
+    </td>
+  </tr>
+</table>
+
 
 ---
 
