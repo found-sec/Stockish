@@ -1,4 +1,4 @@
-import Position from "../models/position.model";
+import Position, { IPosition } from "../models/position.model";
 import User, { IUser } from "../models/user.model";
 import { Request, Response } from "express";
 import { fetchStockData } from "../utils/requests";
@@ -30,67 +30,57 @@ const getHoldings = (req: Request, res: Response) => {
 };
 
 const getPortfolio = async (req: Request, res: Response) => {
-	/* 
-	#swagger.tags = ['User Data']
-	*/
-	let user: IUser | null = await User.findById(req.body.userId).lean();
-	if (!user) {
-		res.status(500).json({ message: "User not found" });
-	}
-	user = user!;
+  const user: IUser | null = await User.findById(req.body.userId).lean();
+  if (!user) {
+    return res.status(500).json({ message: "User not found" });
+  }
 
-	let portfolioValue = 0; //user.cash
-	let portfolioPrevCloseValue = 0;
+  // separate positions by asset type
+  const positionsByType = user.positions.reduce((acc, position) => {
+    const type = position.symbol.startsWith('CRYPTO:') || position.symbol.includes('-USD') ? 'crypto' : 'stock';
+    if (!acc[type]) acc[type] = [];
+    acc[type].push(position);
+    return acc;
+  }, {} as Record<string, IPosition[]>);
 
-	// Create array of how many of each symbol (no duplicates)
-	let positionsNoDupes: { [key: string]: number } = {};
-	user!.positions.forEach((position) => {
-		if (positionsNoDupes[position.symbol]) {
-			positionsNoDupes[position.symbol] += position.quantity;
-		} else {
-			positionsNoDupes[position.symbol] = position.quantity;
-		}
-	});
+  let portfolioValue = user.cash || 0;
+  let portfolioPrevCloseValue = user.cash || 0;
+  const listOfPositions: any[] = [];
 
-	const symbols = Object.keys(positionsNoDupes);
-	const quantities = Object.values(positionsNoDupes);
+  // process each asset type separately
+  for (const [assetType, positions] of Object.entries(positionsByType)) {
+    const symbolQuantities = positions.reduce((acc, pos) => {
+      acc[pos.symbol] = (acc[pos.symbol] || 0) + pos.quantity;
+      return acc;
+    }, {} as Record<string, number>);
 
-	// Loop through each symbol and fetch current price
-	Promise.all(symbols.map((symbol) => fetchStockData(symbol)))
-		.then((values) => {
-			var listOfPositions: any[] = [];
+    const quotes = await Promise.all(
+      Object.keys(symbolQuantities).map(symbol => fetchStockData(symbol))
+    );
 
-			// Sum up the value of all positions
-			values.map((value, i) => {
-				// Sum up the value of all positions
-				portfolioValue += value.regularMarketPrice * quantities[i];
-				portfolioPrevCloseValue +=
-					value.regularMarketPreviousClose * quantities[i];
-			});
+    quotes.forEach(quote => {
+      const quantity = symbolQuantities[quote.symbol];
+      portfolioValue += quote.regularMarketPrice * quantity;
+      portfolioPrevCloseValue += quote.regularMarketPreviousClose * quantity;
 
-			// Create list of positions to send to frontend with data from user.positions plus the properties from the fetchStockData response
-			user!.positions.forEach((position) => {
-				const positionLiveData = values.find(
-					(value) => value.symbol === position.symbol,
-				);
-				if (positionLiveData) {
-					listOfPositions.push({
-						...position,
-						...positionLiveData,
-					});
-				}
-			});
+      positions
+        .filter(pos => pos.symbol === quote.symbol)
+        .forEach(position => {
+          listOfPositions.push({
+            ...position,
+            ...quote,
+            assetType
+          });
+        });
+    });
+  }
 
-			res.status(200).json({
-				portfolioValue,
-				portfolioPrevCloseValue,
-				positions: listOfPositions,
-				cash: user!.cash,
-			});
-		})
-		.catch((err) => {
-			res.status(500).send({ message: err.message });
-		});
+  res.status(200).json({
+    portfolioValue,
+    portfolioPrevCloseValue,
+    positions: listOfPositions,
+    cash: user.cash,
+  });
 };
 
 const getWatchlist = (req: Request, res: Response) => {

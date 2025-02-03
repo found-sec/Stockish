@@ -1,75 +1,62 @@
 import yahooFinance from "yahoo-finance2";
 import Cache from "node-cache";
 import axios from "axios";
-const stockCache = new Cache({ stdTTL: 60 }); // 1 minute
+const stockCache = new Cache({ stdTTL: 30 }); // 30 secs
 
 import dotenv from "dotenv";
 dotenv.config();
 
+interface CachedStockData { // just for more type safety
+  timestamp: number;
+  data: {
+    symbol: string;
+    longName: string;
+    regularMarketPrice: number;
+    regularMarketPreviousClose: number;
+    regularMarketChangePercent: number;
+    quoteType: string;
+  }
+}
+
 export const fetchStockData = async (symbol: string): Promise<any> => {
-	const cacheKey = symbol + "-quote";
+  const isCrypto = symbol.startsWith('CRYPTO:') || symbol.includes('-USD');
+  const cacheKey = `${isCrypto ? 'crypto' : 'stock'}-${symbol}-quote`;
+  
+  // Clear existing cache for this specific symbol
+  if (stockCache.has(cacheKey)) {
+    stockCache.del(cacheKey);
+  }
 
-	try {
-		if (stockCache.has(cacheKey)) {
-			return stockCache.get(cacheKey);
-		} else {
-			const quote = await yahooFinance.quoteCombine(symbol, {
-				fields: [
-					"regularMarketPrice",
-					"regularMarketChangePercent",
-					"longName",
-					"regularMarketPreviousClose",
-				],
-			});
+  try {
+    const quote = isCrypto ? 
+      await yahooFinance.quoteCombine(symbol, {
+        fields: ["regularMarketPrice", "regularMarketChangePercent", "longName"],
+      }) :
+      await yahooFinance.quoteCombine(symbol, {
+        fields: [
+          "regularMarketPrice",
+          "regularMarketChangePercent",
+          "longName",
+          "regularMarketPreviousClose"
+        ]
+      });
 
-			const {
-				regularMarketPrice,
-				regularMarketChangePercent,
-				longName,
-				regularMarketPreviousClose,
-			} = quote;
+    const stockData = {
+      symbol,
+      longName: quote.longName,
+      regularMarketPrice: quote.regularMarketPrice,
+      regularMarketPreviousClose: quote.regularMarketPreviousClose,
+      regularMarketChangePercent: quote.regularMarketChangePercent,
+      assetType: isCrypto ? 'crypto' : 'stock'
+    };
 
-			const stockData = {
-				symbol,
-				longName,
-				regularMarketPrice,
-				regularMarketPreviousClose,
-				regularMarketChangePercent,
-			};
-
-			stockCache.set(cacheKey, stockData);
-			return stockData;
-		}
-	} catch (err: any) {
-		if (err.result && Array.isArray(err.result)) {
-			let quote = err.result[0];
-
-			const {
-				regularMarketPrice,
-				regularMarketChangePercent,
-				longName,
-				regularMarketPreviousClose,
-			} = quote;
-
-			const stockData = {
-				symbol,
-				longName,
-				regularMarketPrice,
-				regularMarketPreviousClose,
-				regularMarketChangePercent,
-			};
-
-			stockCache.set(cacheKey, stockData);
-			return stockData;
-		} else {
-			console.error(err);
-			console.error("Error fetching " + symbol + " stock data:", err);
-			throw new Error(err);
-		}
-	}
+    stockCache.set(cacheKey, stockData, isCrypto ? 30 : 60);
+    return stockData;
+  } catch (err) {
+    console.error(`Error fetching data for ${symbol}:`, err);
+    throw err;
+  }
 };
-
-
 
 export const searchStocks = async (query: string): Promise<any> => {
 	const queryOptions = {
@@ -92,5 +79,5 @@ export const searchStocks = async (query: string): Promise<any> => {
 				console.error(err);
 				throw new Error(err);
 			}
-		});
+				});
 };

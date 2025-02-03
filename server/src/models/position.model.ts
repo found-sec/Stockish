@@ -5,6 +5,7 @@ export interface IPosition extends Document {
 	purchasePrice: number;
 	purchaseDate: number;
 	quantity: number;
+	assetType: 'stock' | 'crypto';
 	_doc: any;
 }
 
@@ -29,6 +30,11 @@ export const PositionSchema = new Schema<IPosition>({
 		required: true,
 		min: 1, // Minimum of 1 share
 	},
+	assetType: {
+		type: String,
+		required: true,
+		enum: ['stock', 'crypto'],
+	}
 });
 
 // 3. Create a Model.
