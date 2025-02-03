@@ -19,27 +19,23 @@ interface CachedStockData { // just for more type safety
 }
 
 export const fetchStockData = async (symbol: string): Promise<any> => {
-  const cacheKey = symbol + "-quote";
+  const isCrypto = symbol.startsWith('CRYPTO:') || symbol.includes('-USD');
+  const cacheKey = `${isCrypto ? 'crypto' : 'stock'}-${symbol}-quote`;
   
-  // clear any existing cached data for this symbol
+  // Clear existing cache for this specific symbol
   if (stockCache.has(cacheKey)) {
     stockCache.del(cacheKey);
   }
 
   try {
-    // check if symbol is crypto
-    const isCrypto = symbol.startsWith('CRYPTO:') || symbol.includes('-USD');
-    
-    // Yahoo Finance endpoint
     const quote = isCrypto ? 
       await yahooFinance.quoteCombine(symbol, {
         fields: ["regularMarketPrice", "regularMarketChangePercent", "longName"],
-        return: "object" 
       }) :
       await yahooFinance.quoteCombine(symbol, {
         fields: [
           "regularMarketPrice",
-          "regularMarketChangePercent", 
+          "regularMarketChangePercent",
           "longName",
           "regularMarketPreviousClose"
         ]
@@ -51,13 +47,11 @@ export const fetchStockData = async (symbol: string): Promise<any> => {
       regularMarketPrice: quote.regularMarketPrice,
       regularMarketPreviousClose: quote.regularMarketPreviousClose,
       regularMarketChangePercent: quote.regularMarketChangePercent,
-      isCrypto: isCrypto
+      assetType: isCrypto ? 'crypto' : 'stock'
     };
 
-    // cache crypto for a shorter time
     stockCache.set(cacheKey, stockData, isCrypto ? 30 : 60);
     return stockData;
-
   } catch (err) {
     console.error(`Error fetching data for ${symbol}:`, err);
     throw err;
