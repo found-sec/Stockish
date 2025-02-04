@@ -1,4 +1,5 @@
-![Atockish_Embed](https://github.com/user-attachments/assets/5e30bf39-1016-4295-b390-87e05a55266a)
+![image](https://github.com/user-attachments/assets/b96987cb-c2e0-4186-a922-383e50fd8f87)
+![Website](https://img.shields.io/website?url=https%3A%2F%2Fstockish.vercel.app/)
 
 # Stockish 📈  
 An educational stock simulator app based on Spikecodes' [Stotra](https://github.com/spikecodes/stotra). Built within 6 hours during a coding marathon.  
