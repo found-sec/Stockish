@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import MarketStatusBar from "./components/MarketStatusBar";
 import { Container, Box, Spacer, Text, Link, Spinner } from "@chakra-ui/react";
@@ -44,6 +44,10 @@ function App() {
 	// });
 
 	// const [selectedPrice, setSelectedPrice] = useState(0);
+
+	useEffect(() => {
+		console.log("Welcome to Stockish");
+	  }, []);
 
 	return (
 		<>
