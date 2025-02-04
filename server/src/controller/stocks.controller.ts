@@ -7,7 +7,7 @@ import {
 } from "../utils/requests";
 import { ITransaction } from "../models/transaction.model";
 import { IPosition } from "../models/position.model";
-
+import { AssetType, ENABLED_ASSET_TYPES, isCryptoSymbol } from '../utils/assetTypes';
 
 const getInfo = async (req: Request, res: Response) => {
 	/* 
@@ -161,16 +161,13 @@ const search = async (req: Request, res: Response) => {
 
 	searchStocks(query)
 		.then((quotes) => {
-			let stocksAndCurrencies = quotes.filter(
-				(quote: { quoteType: string }) => {
-					return (
-						quote.quoteType &&
-						quote.quoteType !== "FUTURE" &&
-						quote.quoteType !== "Option"
-					);
-				},
-			);
-			res.status(200).send(stocksAndCurrencies);
+			// filter out crypto and only return enabled asset types
+			const filteredQuotes = quotes.filter((quote: { quoteType: string, symbol: string }) => {
+				const quoteType = quote.quoteType?.toUpperCase();
+				return ENABLED_ASSET_TYPES.has(quoteType as AssetType) && 
+					   !isCryptoSymbol(quote.symbol);
+			});
+			res.status(200).send(filteredQuotes);
 		})
 		.catch((err) => {
 			console.log(err);

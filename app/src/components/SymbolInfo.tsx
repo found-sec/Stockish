@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { getFormattedSymbol } from '../utils/symbolUtils';
+import { isCryptoSymbol } from '../../../server/src/utils/assetTypes';
 
 interface SymbolInfoProps {
   symbol: string;
@@ -21,6 +22,12 @@ const SymbolInfoWidget: React.FC<SymbolInfoProps> = ({
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.innerHTML = "";
+
+      // check if symbol is crypto
+      if (isCryptoSymbol(symbol)) {
+        containerRef.current.innerHTML = "Cryptocurrency symbols are not supported";
+        return;
+      }
 
       const finalSymbol = getFormattedSymbol(symbol);
       console.log('Original symbol:', symbol);

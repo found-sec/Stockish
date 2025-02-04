@@ -18,10 +18,12 @@ import {
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { SearchIcon } from "@chakra-ui/icons";
+import { AssetType } from '../../../server/src/utils/assetTypes';
 
 interface SearchResult {
 	symbol: string;
 	longname: string;
+	quoteType: AssetType;
 }
 
 function SearchBox() {
@@ -36,7 +38,7 @@ function SearchBox() {
 	const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
 	const [query, setQuery] = useState<string>("");
-	const [results, setResults] = useState<[SearchResult] | null>(null);
+	const [results, setResults] = useState<SearchResult[] | null>(null);
 
 	const onKeyDown = (e: KE<HTMLInputElement>) => {
 		if (results == null || results.length < 1) return;
@@ -68,8 +70,11 @@ function SearchBox() {
 		const searchForStock = setTimeout(() => {
 			axios
 				.get(`/api/stocks/search/${query!}`)
-				.then((res: { data: [SearchResult] }) => {
+				.then((res: { data: SearchResult[] }) => {
 					setResults(res.data);
+				})
+				.catch((err) => {
+					console.error(err);
 				});
 		}, 300);
 
