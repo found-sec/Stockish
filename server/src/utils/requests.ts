@@ -6,7 +6,14 @@ const stockCache = new Cache({ stdTTL: 60 }); // 1 minute
 import dotenv from "dotenv";
 dotenv.config();
 
+import { isCryptoSymbol } from './assetTypes';
+
 export const fetchStockData = async (symbol: string): Promise<any> => {
+  // Reject crypto symbols immediately
+  if (isCryptoSymbol(symbol)) {
+    throw new Error('Cryptocurrency trading is not supported');
+  }
+
   const cacheKey = `stock-${symbol}-quote`;
   
   if (stockCache.has(cacheKey)) {
@@ -58,7 +65,12 @@ export const searchStocks = async (query: string): Promise<any> => {
 	return yahooFinance
 		.search(query, queryOptions)
 		.then((results) => {
-			return results.quotes;
+
+      return results.quotes.filter(quote => 
+        'symbol' in quote && 
+        !isCryptoSymbol(quote.symbol) && 
+        quote.quoteType !== 'CRYPTOCURRENCY'
+      );
 		})
 		.catch((err) => {
 			if (err.result && Array.isArray(err.result.quotes)) {
