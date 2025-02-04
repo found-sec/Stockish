@@ -6,52 +6,70 @@ const stockCache = new Cache({ stdTTL: 60 }); // 1 minute
 import dotenv from "dotenv";
 dotenv.config();
 
-import { isCryptoSymbol } from './assetTypes';
-
 export const fetchStockData = async (symbol: string): Promise<any> => {
-  // Reject crypto symbols immediately
-  if (isCryptoSymbol(symbol)) {
-    throw new Error('Cryptocurrency trading is not supported');
-  }
+	const cacheKey = symbol + "-quote";
 
-  const cacheKey = `stock-${symbol}-quote`;
-  
-  if (stockCache.has(cacheKey)) {
-    stockCache.del(cacheKey);
-  }
+	try {
+		if (stockCache.has(cacheKey)) {
+			return stockCache.get(cacheKey);
+		} else {
+			const quote = await yahooFinance.quoteCombine(symbol, {
+				fields: [
+					"regularMarketPrice",
+					"regularMarketChangePercent",
+					"longName",
+					"regularMarketPreviousClose",
+				],
+			});
 
-  try {
-    const quote = await yahooFinance.quoteCombine(symbol, {
-      fields: [
-        "regularMarketPrice",
-        "regularMarketChangePercent", 
-        "longName",
-        "regularMarketPreviousClose",
-        "quoteType" // check if it's a stock
-      ]
-    });
+			const {
+				regularMarketPrice,
+				regularMarketChangePercent,
+				longName,
+				regularMarketPreviousClose,
+			} = quote;
 
-    // Reject if not a stock
-    if (quote.quoteType !== 'EQUITY') {
-      throw new Error('Only stock trading is supported');
-    }
+			const stockData = {
+				symbol,
+				longName,
+				regularMarketPrice,
+				regularMarketPreviousClose,
+				regularMarketChangePercent,
+			};
 
-    const stockData = {
-      symbol,
-      longName: quote.longName,
-      regularMarketPrice: Number(quote.regularMarketPrice),
-      regularMarketPreviousClose: Number(quote.regularMarketPreviousClose),
-      regularMarketChangePercent: Number(quote.regularMarketChangePercent),
-      assetType: 'stock'
-    };
+			stockCache.set(cacheKey, stockData);
+			return stockData;
+		}
+	} catch (err: any) {
+		if (err.result && Array.isArray(err.result)) {
+			let quote = err.result[0];
 
-    stockCache.set(cacheKey, stockData, 60);
-    return stockData;
-  } catch (err) {
-    console.error(`Error fetching data for ${symbol}:`, err);
-    throw err;
-  }
+			const {
+				regularMarketPrice,
+				regularMarketChangePercent,
+				longName,
+				regularMarketPreviousClose,
+			} = quote;
+
+			const stockData = {
+				symbol,
+				longName,
+				regularMarketPrice,
+				regularMarketPreviousClose,
+				regularMarketChangePercent,
+			};
+
+			stockCache.set(cacheKey, stockData);
+			return stockData;
+		} else {
+			console.error(err);
+			console.error("Error fetching " + symbol + " stock data:", err);
+			throw new Error(err);
+		}
+	}
 };
+
+
 
 export const searchStocks = async (query: string): Promise<any> => {
 	const queryOptions = {
@@ -65,12 +83,7 @@ export const searchStocks = async (query: string): Promise<any> => {
 	return yahooFinance
 		.search(query, queryOptions)
 		.then((results) => {
-
-      return results.quotes.filter(quote => 
-        'symbol' in quote && 
-        !isCryptoSymbol(quote.symbol) && 
-        quote.quoteType !== 'CRYPTOCURRENCY'
-      );
+			return results.quotes;
 		})
 		.catch((err) => {
 			if (err.result && Array.isArray(err.result.quotes)) {

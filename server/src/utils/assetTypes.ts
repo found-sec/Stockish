@@ -1,31 +1,44 @@
 export enum AssetType {
-  STOCK = 'STOCK',
+  EQUITY = 'EQUITY',
   INDEX = 'INDEX',
   ETF = 'ETF',
-  FOREX = 'FOREX',
   MUTUAL_FUND = 'MUTUAL_FUND'
 }
 
 export const ENABLED_ASSET_TYPES = new Set([
-  AssetType.STOCK,
+  AssetType.EQUITY,
   AssetType.INDEX,
   AssetType.ETF,
-  AssetType.FOREX,
   AssetType.MUTUAL_FUND
 ]);
 
-// crypto detection utils
+
+export const EXCLUDED_QUOTE_TYPES = new Set([
+  'CRYPTOCURRENCY',
+  'CRYPTO',
+  'CURRENCY',
+  'FUTURE',
+  'FUTURES'
+]);
+
 export const CRYPTO_PATTERNS = [
-  /-USD$/,  // BTC-USD, ETH-USD
-  /-EUR$/,  // BTC-EUR
-  /-JPY$/,  // BTC-JPY
-  /-GBP$/,  // BTC-GBP
-  /^BTC/,   // BTCUSD, BTC
-  /^ETH/,   // ETHUSD, ETH
-  /USDT$/,  // Common stablecoin pairs
-  /^USDC/,  // USD Coin pairs
+  /-USD$/i,
+  /-EUR$/i,
+  /-JPY$/i,
+  /-GBP$/i,
+  /^BTC-/i,
+  /^ETH-/i,
+  /^XRP-/i,
+  /^DOGE-/i,
+  /^ADA-/i,
+  /USDT$/i,
+  /^USDC/i,
+  /BUSD$/i,
+  /USDD$/i
 ];
 
 export const isCryptoSymbol = (symbol: string): boolean => {
-  return CRYPTO_PATTERNS.some(pattern => pattern.test(symbol));
+  if (!symbol) return false;
+  const upperSymbol = symbol.toUpperCase();
+  return CRYPTO_PATTERNS.some(pattern => pattern.test(upperSymbol));
 };

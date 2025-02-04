@@ -17,7 +17,7 @@
 		"cors": "^2.8.5",
 		"dotenv": "^16.4.5",
 		"email-existence": "^0.1.6",
-		"email-verifier": "^0.4.1",
+		"email-verifier": "^0.0.1",
 		"express": "^4.18.2",
 		"express-rate-limit": "^6.9.0",
 		"financial-news-api": "^1.0.0",
@@ -30,7 +30,7 @@
 		"nodemailer": "^6.9.16",
 		"swagger-jsdoc": "^6.2.8",
 		"swagger-ui-express": "^5.0.0",
-		"yahoo-finance2": "^2.13.2"
+		"yahoo-finance2": "^2.13.3"
 	},
 	"devDependencies": {
 		"@types/bcrypt": "^5.0.0",
