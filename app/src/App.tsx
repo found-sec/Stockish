@@ -17,73 +17,75 @@ import HeroPage from "./pages/HeroPage";
 import Footer from "./components/Footer";
 
 export type Transaction = {
-	symbol: string;
-	purchasePrice: number;
-	quantity: number;
-	date: Date;
-	type: "buy" | "sell";
+  symbol: string;
+  purchasePrice: number;
+  quantity: number;
+  date: Date;
+  type: "buy" | "sell";
 };
 
 export type Position = {
-	symbol: string;
-	longName: string;
-	purchasePrice: number;
-	purchaseDate: Date;
-	quantity: number;
-	regularMarketPrice: number;
-	regularMarketPreviousClose: number;
-	regularMarketChangePercent: number;
+  symbol: string;
+  longName: string;
+  purchasePrice: number;
+  purchaseDate: Date;
+  quantity: number;
+  regularMarketPrice: number;
+  regularMarketPreviousClose: number;
+  regularMarketChangePercent: number;
 };
 
 function App() {
-	// Stock format: {symbol, count, price}
-	// const [selectedAction, setSelectedAction] = useState("buy");
-	// const [selelectedStock, setSelectedStock] = useState({
-	// 	symbol: "",
-	// 	price: 0,
-	// });
+  // Stock format: {symbol, count, price}
+  // const [selectedAction, setSelectedAction] = useState("buy");
+  // const [selelectedStock, setSelectedStock] = useState({
+  // 	symbol: "",
+  // 	price: 0,
+  // });
 
-	// const [selectedPrice, setSelectedPrice] = useState(0);
+  // const [selectedPrice, setSelectedPrice] = useState(0);
 
-	useEffect(() => {
-		console.log("Welcome to Stockish");
-	  }, []);
+  useEffect(() => {
+    console.log("Welcome to Stockish");
+  }, []);
 
-	return (
-		<>
-			<Navbar />
-			 <MarketStatusBar />
-			<Container maxW="container.90vw">
-				<Spacer h="10" />
-				<Box>
-					<Suspense fallback={<Spinner />}>
-						<Routes>
-							<Route path="/" element={<HeroPage />}></Route>
-							<Route path="/dashboard" element={<Dashboard />}></Route>
+  return (
+    <>
+      <Navbar />
+      <MarketStatusBar />
+      <Container maxW="container.90vw" paddingTop="70px">
+        <Spacer h="10" />
+        <Box>
+          <Suspense fallback={<Spinner />}>
+            <Routes>
+              <Route path="/" element={<HeroPage />}></Route>
+              <Route path="/dashboard" element={<Dashboard />}></Route>
 
-							<Route path="/markets" element={<Markets />}></Route>
+              <Route path="/markets" element={<Markets />}></Route>
 
-							<Route path="/login" element={<Login />}></Route>
-												
-							<Route path="/forgot-password" element={<ForgotPassword />}></Route>
+              <Route path="/login" element={<Login />}></Route>
 
-							<Route path="/signup" element={<Signup />}></Route>
+              <Route
+                path="/forgot-password"
+                element={<ForgotPassword />}></Route>
 
-							<Route path="/howtotrade" element={<HowToTrade />}></Route>
+              <Route path="/signup" element={<Signup />}></Route>
 
-							<Route path="/leaderboard" element={<Leaderboard />}></Route>
+              <Route path="/howtotrade" element={<HowToTrade />}></Route>
 
-							<Route path="/stocks/:symbol" element={<StockView />}></Route>
+              <Route path="/leaderboard" element={<Leaderboard />}></Route>
 
-							{/* Add 404*/}
-							<Route path="*" element={<NotFound />}></Route>
-						</Routes>
-					</Suspense>
-				</Box>
-			</Container>
-			<Footer />
-		</>
-	);
+              <Route path="/stocks/:symbol" element={<StockView />}></Route>
+
+              {/* Add 404*/}
+              <Route path="*" element={<NotFound />}></Route>
+            </Routes>
+          </Suspense>
+        </Box>
+      </Container>
+      <Footer />
+    </>
+  );
 }
 
 export default App;
