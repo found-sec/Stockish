@@ -12,6 +12,7 @@ export interface IUser extends Document {
 	cash: number;
 	_doc: any;
 	_id: string;
+	portfolioHistory: any[];
 }
 
 // Create a Schema corresponding to the document interface.
@@ -40,6 +41,16 @@ const userSchema = new Schema<IUser>({
 	ledger: [TransactionSchema],
 	positions: [PositionSchema],
 	cash: Number,
+}, {
+	toJSON: { virtuals: true },
+	toObject: { virtuals: true }
+});
+
+userSchema.virtual('portfolioHistory', {
+	ref: 'Portfolio',
+	localField: '_id',
+	foreignField: 'userId',
+	options: { sort: { timestamp: -1 } }
 });
 
 const User = model<IUser>("User", userSchema);
