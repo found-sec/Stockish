@@ -97,7 +97,9 @@ const PortfolioChart: React.FC = () => {
       const priceResponses = await Promise.all(pricePromises);
       const stockPrices: Record<string, number> = {};
       symbols.forEach((symbol, index) => {
-        stockPrices[symbol] = priceResponses[index].data.price;
+        if (priceResponses[index] && priceResponses[index].data) {
+          stockPrices[symbol] = priceResponses[index].data.price;
+        }
       });
 
       // Sort ledger entries by date
@@ -247,8 +249,8 @@ const PortfolioChart: React.FC = () => {
           y2: 1
         },
         stops: [
-          [0, new Highcharts.Color("#3182CE").setOpacity(0.4).get('rgba')],
-          [1, new Highcharts.Color("#3182CE").setOpacity(0).get('rgba')]
+          [0, 'rgba(49, 130, 206, 0.4)'], // 40% opacity
+          [1, 'rgba(49, 130, 206, 0)']    // 0% opacity (fully transparent)
         ]
       },
       color: "#3182CE"
@@ -256,10 +258,12 @@ const PortfolioChart: React.FC = () => {
     tooltip: {
       formatter: function() {
         const value = typeof this.y === 'number' ? this.y : 0;
-        return `<b>${Highcharts.dateFormat('%Y-%m-%d', this.x)}</b><br/>
-                Portfolio Value: $${value.toLocaleString()}`;
+        const date = this.x ? Highcharts.dateFormat('%Y-%m-%d', Number(this.x)) : 'Invalid date';  // Ensure x is a number
+        return `<b>${date}</b><br/>Portfolio Value: $${value.toLocaleString()}`;
       }
-    },
+    }
+    ,
+    
     credits: {
       enabled: false,
     },
@@ -290,4 +294,3 @@ const PortfolioChart: React.FC = () => {
 };
 
 export default PortfolioChart;
-
