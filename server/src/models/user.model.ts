@@ -1,6 +1,7 @@
 import { Document, Schema, model } from "mongoose";
 import { ITransaction, TransactionSchema } from "./transaction.model";
 import { IPosition, PositionSchema } from "./position.model";
+import { IPortfolio, PortfolioSchema } from "./portfolio.model"; // Import Portfolio Schema
 
 export interface IUser extends Document {
 	email: string;
@@ -9,10 +10,10 @@ export interface IUser extends Document {
 	watchlist: string[];
 	ledger: ITransaction[];
 	positions: IPosition[];
+	portfolios: IPortfolio[]; // Add portfolios array
 	cash: number;
 	_doc: any;
 	_id: string;
-	portfolioHistory: any[];
 }
 
 // Create a Schema corresponding to the document interface.
@@ -40,17 +41,8 @@ const userSchema = new Schema<IUser>({
 	watchlist: [String],
 	ledger: [TransactionSchema],
 	positions: [PositionSchema],
+	portfolios: [PortfolioSchema], // Store portfolio history
 	cash: Number,
-}, {
-	toJSON: { virtuals: true },
-	toObject: { virtuals: true }
-});
-
-userSchema.virtual('portfolioHistory', {
-	ref: 'Portfolio',
-	localField: '_id',
-	foreignField: 'userId',
-	options: { sort: { timestamp: -1 } }
 });
 
 const User = model<IUser>("User", userSchema);
