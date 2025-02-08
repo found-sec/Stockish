@@ -290,3 +290,4 @@ const PortfolioChart: React.FC = () => {
 };
 
 export default PortfolioChart;
+
