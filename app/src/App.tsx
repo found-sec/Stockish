@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import MarketStatusBar from "./components/MarketStatusBar";
 import { Container, Box, Spacer, Text, Link, Spinner } from "@chakra-ui/react";
@@ -36,14 +36,19 @@ export type Position = {
 };
 
 function App() {
-  // Stock format: {symbol, count, price}
-  // const [selectedAction, setSelectedAction] = useState("buy");
-  // const [selelectedStock, setSelectedStock] = useState({
-  // 	symbol: "",
-  // 	price: 0,
-  // });
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true);
 
-  // const [selectedPrice, setSelectedPrice] = useState(0);
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.scrollY;
+      setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+      setPrevScrollPos(currentScrollPos);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [prevScrollPos]);
 
   useEffect(() => {
     console.log("Welcome to Stockish");
@@ -51,9 +56,16 @@ function App() {
 
   return (
     <>
-      <Navbar />
-      <MarketStatusBar />
-      <Container maxW="container.90vw" paddingTop="70px">
+      <Box
+        position="fixed"
+        width="100%"
+        zIndex={1000}
+        transition="transform 0.3s ease-in-out"
+        transform={visible ? "translateY(0)" : "translateY(-100%)"}>
+        <Navbar />
+        <MarketStatusBar />
+      </Box>
+      <Container maxW="container.90vw" paddingTop="100px">
         <Spacer h="10" />
         <Box>
           <Suspense fallback={<Spinner />}>

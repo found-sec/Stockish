@@ -59,14 +59,9 @@ export default function Navbar() {
       p="5"
       display="flex"
       justifyContent="space-between"
-      position="fixed"
-      top="0"
-      left="0"
-      right="0"
+      position="relative"
       bg="#f7fafc"
-      transition="transform 0.3s ease-in-out"
-      transform={visible ? "translateY(0)" : "translateY(-100%)"}
-      zIndex="1000">
+      zIndex="1001">
       {/* left side */}
       <Flex align="center" gap={30}>
         <Text as={Link} to="/" display="flex" alignItems="center" gap="1">
