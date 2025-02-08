@@ -92,7 +92,7 @@ const PortfolioChart: React.FC = () => {
       // Get current stock prices
       const symbols = [...new Set(currentPositions.map(pos => pos.symbol))];
       const pricePromises = symbols.map(symbol => 
-        api.get<StockPrice>(`/api/stocks/${symbol}/price`)
+        api.get<StockPrice>(`/stocks/${symbol}/price`)
       );
       const priceResponses = await Promise.all(pricePromises);
       const stockPrices: Record<string, number> = {};
