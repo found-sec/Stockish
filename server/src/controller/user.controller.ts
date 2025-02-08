@@ -2,7 +2,7 @@ import Position from "../models/position.model";
 import User, { IUser } from "../models/user.model";
 import { Request, Response } from "express";
 import { fetchStockData } from "../utils/requests";
-import Portfolio from "../models/portfolio.model";
+
 
 const getLedger = (req: Request, res: Response) => {
 	/* 
@@ -94,66 +94,7 @@ const getPortfolio = async (req: Request, res: Response) => {
 		});
 };
 
-const getPortfolioHistory = async (req: Request, res: Response) => {
-    try {
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-        const user = await User.findById(req.body.userId)
-            .populate({
-                path: 'portfolioHistory',
-                match: { timestamp: { $gte: thirtyDaysAgo } },
-                select: 'value timestamp -_id',
-                options: { sort: { timestamp: 1 } }
-            });
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        res.json(user.portfolioHistory);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching portfolio history' });
-    }
-};
-
-const updatePortfolioValue = async (userId: string) => {
-	try {
-	  const user = await User.findById(userId);
-	  if (!user) return;
-  
-	  // Calculate portfolio value
-	  let portfolioValue = user.cash;
-	  let positionsNoDupes: { [key: string]: number } = {};
-	  
-	  user.positions.forEach((position) => {
-		if (positionsNoDupes[position.symbol]) {
-		  positionsNoDupes[position.symbol] += position.quantity;
-		} else {
-		  positionsNoDupes[position.symbol] = position.quantity;
-		}
-	  });
-  
-	  const symbols = Object.keys(positionsNoDupes);
-	  const quantities = Object.values(positionsNoDupes);
-  
-	  const values = await Promise.all(symbols.map(symbol => fetchStockData(symbol)));
-	  
-	  values.forEach((value, i) => {
-		portfolioValue += value.regularMarketPrice * quantities[i];
-	  });
-  
-	  // Save new portfolio value
-	  await Portfolio.create({
-		userId,
-		value: portfolioValue,
-		timestamp: new Date()
-	  });
-  
-	} catch (error) {
-	  console.error('Error updating portfolio value:', error);
-	}
-  };
 
 const getWatchlist = (req: Request, res: Response) => {
 	/* 
@@ -223,8 +164,6 @@ export default {
 	getLedger,
 	getHoldings,
 	getPortfolio,
-	getPortfolioHistory,
-	updatePortfolioValue,
 	// Watchlist routes
 	getWatchlist,
 	addToWatchlist,
