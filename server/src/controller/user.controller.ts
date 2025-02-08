@@ -95,26 +95,29 @@ const getPortfolio = async (req: Request, res: Response) => {
 };
 
 const getPortfolioHistory = async (req: Request, res: Response) => {
-	try {
-	  const userId = req.body.userId;
-	  const thirtyDaysAgo = new Date();
-	  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  
-	  // queries db for portfolio history
-	  const portfolioHistory = await Portfolio.find({
-		userId,
-		timestamp: { $gte: thirtyDaysAgo } // 1mo
-	  })
-	  .sort({ timestamp: 1 })
-	  .select('value timestamp -_id');
-  
-	  res.json(portfolioHistory);
-	} catch (error) {
-	  res.status(500).json({ message: 'Error fetching portfolio history' });
-	}
-  };
+    try {
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-  const updatePortfolioValue = async (userId: string) => {
+        const user = await User.findById(req.body.userId)
+            .populate({
+                path: 'portfolioHistory',
+                match: { timestamp: { $gte: thirtyDaysAgo } },
+                select: 'value timestamp -_id',
+                options: { sort: { timestamp: 1 } }
+            });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json(user.portfolioHistory);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching portfolio history' });
+    }
+};
+
+const updatePortfolioValue = async (userId: string) => {
 	try {
 	  const user = await User.findById(userId);
 	  if (!user) return;

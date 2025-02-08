@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import axios from "axios";
+import api from "../services/api.service"; 
 import { Box, Spinner, Text } from "@chakra-ui/react";
 import tokens from "../services/tokens.service";
 
@@ -15,10 +15,9 @@ const PortfolioChart: React.FC = () => {
 
     const fetchPortfolioHistory = async () => {
       try {
-        const response = await axios.get("/api/user/portfolio/history");
-        // data format: [{ timestamp: number, value: number }]
+        const response = await api.get("/user/portfolio/history");
         const formattedData = response.data.map((point: any) => [
-          point.timestamp,
+          new Date(point.timestamp).getTime(), 
           point.value,
         ]);
         setChartData(formattedData);
