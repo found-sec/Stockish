@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Text, CloseButton, Flex } from '@chakra-ui/react';
+import React, { useState, useEffect } from "react";
+import { Box, Text, CloseButton, Flex } from "@chakra-ui/react";
 
 const MarketStatusBar = () => {
   const [isMarketClosed, setIsMarketClosed] = useState(true);
@@ -7,7 +7,9 @@ const MarketStatusBar = () => {
 
   const checkMarketStatus = () => {
     const now = new Date();
-    const nyTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' })); // use newyork time
+    const nyTime = new Date(
+      now.toLocaleString("en-US", { timeZone: "America/New_York" })
+    ); // use newyork time
     const day = nyTime.getDay();
     const hour = nyTime.getHours();
     const minute = nyTime.getMinutes();
@@ -39,15 +41,15 @@ const MarketStatusBar = () => {
       bg="linear-gradient(90deg,rgb(250, 230, 115) 0%,rgb(248, 188, 75) 100%)"
       p={1}
       position="relative"
-    >
+      width="100%"
+      zIndex="1000">
       <Flex align="center" justify="center">
-        <Text 
+        <Text
           color="white"
-          fontWeight="medium" 
+          fontWeight="medium"
           textAlign="center"
           fontSize="sm"
-          mr={8}
-        >
+          mr={8}>
           The stock market is closed - Portfolio values may not update
         </Text>
         <CloseButton

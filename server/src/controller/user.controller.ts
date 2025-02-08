@@ -2,6 +2,7 @@ import Position from "../models/position.model";
 import User, { IUser } from "../models/user.model";
 import { Request, Response } from "express";
 import { fetchStockData } from "../utils/requests";
+import Portfolio from "../models/portfolio.model";
 
 const getLedger = (req: Request, res: Response) => {
 	/* 
@@ -93,6 +94,64 @@ const getPortfolio = async (req: Request, res: Response) => {
 		});
 };
 
+const getPortfolioHistory = async (req: Request, res: Response) => {
+	try {
+	  const userId = req.body.userId;
+	  const thirtyDaysAgo = new Date();
+	  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  
+	  // queries db for portfolio history
+	  const portfolioHistory = await Portfolio.find({
+		userId,
+		timestamp: { $gte: thirtyDaysAgo } // 1mo
+	  })
+	  .sort({ timestamp: 1 })
+	  .select('value timestamp -_id');
+  
+	  res.json(portfolioHistory);
+	} catch (error) {
+	  res.status(500).json({ message: 'Error fetching portfolio history' });
+	}
+  };
+
+  const updatePortfolioValue = async (userId: string) => {
+	try {
+	  const user = await User.findById(userId);
+	  if (!user) return;
+  
+	  // Calculate portfolio value
+	  let portfolioValue = user.cash;
+	  let positionsNoDupes: { [key: string]: number } = {};
+	  
+	  user.positions.forEach((position) => {
+		if (positionsNoDupes[position.symbol]) {
+		  positionsNoDupes[position.symbol] += position.quantity;
+		} else {
+		  positionsNoDupes[position.symbol] = position.quantity;
+		}
+	  });
+  
+	  const symbols = Object.keys(positionsNoDupes);
+	  const quantities = Object.values(positionsNoDupes);
+  
+	  const values = await Promise.all(symbols.map(symbol => fetchStockData(symbol)));
+	  
+	  values.forEach((value, i) => {
+		portfolioValue += value.regularMarketPrice * quantities[i];
+	  });
+  
+	  // Save new portfolio value
+	  await Portfolio.create({
+		userId,
+		value: portfolioValue,
+		timestamp: new Date()
+	  });
+  
+	} catch (error) {
+	  console.error('Error updating portfolio value:', error);
+	}
+  };
+
 const getWatchlist = (req: Request, res: Response) => {
 	/* 
 	#swagger.tags = ['User Watchlist']
@@ -161,6 +220,8 @@ export default {
 	getLedger,
 	getHoldings,
 	getPortfolio,
+	getPortfolioHistory,
+	updatePortfolioValue,
 	// Watchlist routes
 	getWatchlist,
 	addToWatchlist,

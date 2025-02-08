@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import MarketStatusBar from "./components/MarketStatusBar";
 import { Container, Box, Spacer, Text, Link, Spinner } from "@chakra-ui/react";
@@ -17,73 +17,87 @@ import HeroPage from "./pages/HeroPage";
 import Footer from "./components/Footer";
 
 export type Transaction = {
-	symbol: string;
-	purchasePrice: number;
-	quantity: number;
-	date: Date;
-	type: "buy" | "sell";
+  symbol: string;
+  purchasePrice: number;
+  quantity: number;
+  date: Date;
+  type: "buy" | "sell";
 };
 
 export type Position = {
-	symbol: string;
-	longName: string;
-	purchasePrice: number;
-	purchaseDate: Date;
-	quantity: number;
-	regularMarketPrice: number;
-	regularMarketPreviousClose: number;
-	regularMarketChangePercent: number;
+  symbol: string;
+  longName: string;
+  purchasePrice: number;
+  purchaseDate: Date;
+  quantity: number;
+  regularMarketPrice: number;
+  regularMarketPreviousClose: number;
+  regularMarketChangePercent: number;
 };
 
 function App() {
-	// Stock format: {symbol, count, price}
-	// const [selectedAction, setSelectedAction] = useState("buy");
-	// const [selelectedStock, setSelectedStock] = useState({
-	// 	symbol: "",
-	// 	price: 0,
-	// });
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true);
 
-	// const [selectedPrice, setSelectedPrice] = useState(0);
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.scrollY;
+      setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+      setPrevScrollPos(currentScrollPos);
+    };
 
-	useEffect(() => {
-		console.log("Welcome to Stockish");
-	  }, []);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [prevScrollPos]);
 
-	return (
-		<>
-			<Navbar />
-			 <MarketStatusBar />
-			<Container maxW="container.90vw">
-				<Spacer h="10" />
-				<Box>
-					<Suspense fallback={<Spinner />}>
-						<Routes>
-							<Route path="/" element={<HeroPage />}></Route>
-							<Route path="/dashboard" element={<Dashboard />}></Route>
+  useEffect(() => {
+    console.log("Welcome to Stockish");
+  }, []);
 
-							<Route path="/markets" element={<Markets />}></Route>
+  return (
+    <>
+      <Box
+        position="fixed"
+        width="100%"
+        zIndex={1000}
+        transition="transform 0.3s ease-in-out"
+        transform={visible ? "translateY(0)" : "translateY(-100%)"}>
+        <Navbar />
+        <MarketStatusBar />
+      </Box>
+      <Container maxW="container.90vw" paddingTop="100px">
+        <Spacer h="10" />
+        <Box>
+          <Suspense fallback={<Spinner />}>
+            <Routes>
+              <Route path="/" element={<HeroPage />}></Route>
+              <Route path="/dashboard" element={<Dashboard />}></Route>
 
-							<Route path="/login" element={<Login />}></Route>
-												
-							<Route path="/forgot-password" element={<ForgotPassword />}></Route>
+              <Route path="/markets" element={<Markets />}></Route>
 
-							<Route path="/signup" element={<Signup />}></Route>
+              <Route path="/login" element={<Login />}></Route>
 
-							<Route path="/howtotrade" element={<HowToTrade />}></Route>
+              <Route
+                path="/forgot-password"
+                element={<ForgotPassword />}></Route>
 
-							<Route path="/leaderboard" element={<Leaderboard />}></Route>
+              <Route path="/signup" element={<Signup />}></Route>
 
-							<Route path="/stocks/:symbol" element={<StockView />}></Route>
+              <Route path="/howtotrade" element={<HowToTrade />}></Route>
 
-							{/* Add 404*/}
-							<Route path="*" element={<NotFound />}></Route>
-						</Routes>
-					</Suspense>
-				</Box>
-			</Container>
-			<Footer />
-		</>
-	);
+              <Route path="/leaderboard" element={<Leaderboard />}></Route>
+
+              <Route path="/stocks/:symbol" element={<StockView />}></Route>
+
+              {/* Add 404*/}
+              <Route path="*" element={<NotFound />}></Route>
+            </Routes>
+          </Suspense>
+        </Box>
+      </Container>
+      <Footer />
+    </>
+  );
 }
 
 export default App;
