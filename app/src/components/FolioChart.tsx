@@ -33,85 +33,128 @@ const PortfolioChart: React.FC = () => {
   const [portfolioData, setPortfolioData] = useState<PortfolioDataPoint[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [positions, setPositions] = useState<Position[]>([]);
+  const [cash, setCash] = useState<number>(0);
 
+  // Fetch initial portfolio data
   useEffect(() => {
     if (!tokens.isAuthenticated()) return;
 
-    const calculatePortfolioHistory = async () => {
+    const fetchPortfolioData = async () => {
       try {
-        // Fetch user data including positions, ledger, and cash
         const response = await api.get("/api/user/portfolio");
-        const { positions, ledger, cash } = response.data;
+        setPositions(response.data.positions || []);
+        setCash(response.data.cash || 0);
+        await calculatePortfolioHistory(response.data.positions, response.data.cash, response.data.ledger);
+      } catch (err) {
+        setError("Failed to load initial portfolio data");
+        console.error(err);
+      }
+    };
 
-        // Get current stock prices
-        const symbols = [...new Set(positions.map((pos: Position) => pos.symbol))];
-        const pricePromises = symbols.map(symbol => 
-          api.get<StockPrice>(`/api/stocks/${symbol}/price`)
-        );
-        const priceResponses = await Promise.all(pricePromises);
-        const stockPrices: Record<string, number> = {};
-        symbols.forEach((symbol, index) => {
-          stockPrices[symbol] = priceResponses[index].data.price;
-        });
+    fetchPortfolioData();
+  }, []);
 
-        // Sort ledger entries by date
-        const sortedLedger = [...ledger].sort((a, b) => a.date - b.date);
+  // Listen for position updates
+  useEffect(() => {
+    if (!tokens.isAuthenticated()) return;
 
-        // Calculate portfolio value at each transaction point
-        const portfolioHistory: PortfolioDataPoint[] = [];
-        let currentPositions: Record<string, Position> = {};
-        let currentCash = cash;
+    const updateInterval = setInterval(async () => {
+      try {
+        const response = await api.get("/api/user/portfolio");
+        const newPositions = response.data.positions || [];
+        const newCash = response.data.cash || 0;
 
-        // Add initial point (either first transaction or 30 days ago)
-        const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
-        const startDate = sortedLedger.length > 0 
-          ? Math.max(sortedLedger[0].date, thirtyDaysAgo)
-          : thirtyDaysAgo;
+        // Check if positions or cash have changed
+        const hasChanged = 
+          JSON.stringify(positions) !== JSON.stringify(newPositions) ||
+          cash !== newCash;
 
-        portfolioHistory.push({
-          date: startDate,
-          value: currentCash
-        });
+        if (hasChanged) {
+          setPositions(newPositions);
+          setCash(newCash);
+          await calculatePortfolioHistory(newPositions, newCash, response.data.ledger);
+        }
+      } catch (err) {
+        console.error("Failed to update portfolio data:", err);
+      }
+    }, 5000); // Update every 5 seconds
 
-        // Process each transaction
-        sortedLedger.forEach((entry: LedgerEntry) => {
-          if (entry.date < thirtyDaysAgo) return;
+    return () => clearInterval(updateInterval);
+  }, [positions, cash]);
 
+  const calculatePortfolioHistory = async (
+    currentPositions: Position[],
+    currentCash: number,
+    ledger: LedgerEntry[]
+  ) => {
+    try {
+      // Get current stock prices
+      const symbols = [...new Set(currentPositions.map(pos => pos.symbol))];
+      const pricePromises = symbols.map(symbol => 
+        api.get<StockPrice>(`/api/stocks/${symbol}/price`)
+      );
+      const priceResponses = await Promise.all(pricePromises);
+      const stockPrices: Record<string, number> = {};
+      symbols.forEach((symbol, index) => {
+        stockPrices[symbol] = priceResponses[index].data.price;
+      });
+
+      // Sort ledger entries by date
+      const sortedLedger = [...ledger].sort((a, b) => a.date - b.date);
+
+      // Calculate portfolio value at each transaction point
+      const portfolioHistory: PortfolioDataPoint[] = [];
+      let positionsMap: Record<string, Position> = {};
+      let cashBalance = currentCash;
+
+      // Add initial point (30 days ago)
+      const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
+      
+      portfolioHistory.push({
+        date: thirtyDaysAgo,
+        value: cashBalance
+      });
+
+      // Process each transaction
+      sortedLedger
+        .filter(entry => entry.date >= thirtyDaysAgo)
+        .forEach(entry => {
           // Update cash
           if (entry.type === 'buy') {
-            currentCash -= entry.price * entry.quantity;
+            cashBalance -= entry.price * entry.quantity;
           } else {
-            currentCash += entry.price * entry.quantity;
+            cashBalance += entry.price * entry.quantity;
           }
 
           // Update positions
           if (entry.type === 'buy') {
-            if (!currentPositions[entry.symbol]) {
-              currentPositions[entry.symbol] = {
+            if (!positionsMap[entry.symbol]) {
+              positionsMap[entry.symbol] = {
                 symbol: entry.symbol,
                 purchasePrice: entry.price,
                 purchaseDate: entry.date,
                 quantity: entry.quantity
               };
             } else {
-              const position = currentPositions[entry.symbol];
+              const position = positionsMap[entry.symbol];
               if (position) {
                 position.quantity += entry.quantity;
               }
             }
           } else {
-            const position = currentPositions[entry.symbol];
+            const position = positionsMap[entry.symbol];
             if (position) {
               position.quantity -= entry.quantity;
               if (position.quantity === 0) {
-                delete currentPositions[entry.symbol];
+                delete positionsMap[entry.symbol];
               }
             }
           }
 
           // Calculate total value at this point
-          let totalValue = currentCash;
-          Object.values(currentPositions).forEach(position => {
+          let totalValue = cashBalance;
+          Object.values(positionsMap).forEach(position => {
             const currentPrice = stockPrices[position.symbol];
             if (typeof currentPrice === 'number') {
               totalValue += currentPrice * position.quantity;
@@ -124,34 +167,28 @@ const PortfolioChart: React.FC = () => {
           });
         });
 
-        // Add current point if not already included
-        const lastPoint = portfolioHistory[portfolioHistory.length - 1];
-        if (lastPoint && lastPoint.date < Date.now()) {
-          let finalValue = currentCash;
-          Object.values(currentPositions).forEach(position => {
-            const currentPrice = stockPrices[position.symbol];
-            if (typeof currentPrice === 'number') {
-              finalValue += currentPrice * position.quantity;
-            }
-          });
-
-          portfolioHistory.push({
-            date: Date.now(),
-            value: finalValue
-          });
+      // Add current point
+      let finalValue = currentCash;
+      currentPositions.forEach(position => {
+        const currentPrice = stockPrices[position.symbol];
+        if (typeof currentPrice === 'number') {
+          finalValue += currentPrice * position.quantity;
         }
+      });
 
-        setPortfolioData(portfolioHistory);
-      } catch (err) {
-        setError("Failed to load portfolio data");
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      portfolioHistory.push({
+        date: Date.now(),
+        value: finalValue
+      });
 
-    calculatePortfolioHistory();
-  }, []);
+      setPortfolioData(portfolioHistory);
+      setIsLoading(false);
+    } catch (err) {
+      setError("Failed to calculate portfolio history");
+      console.error(err);
+      setIsLoading(false);
+    }
+  };
 
   if (!tokens.isAuthenticated()) {
     return (
@@ -178,6 +215,9 @@ const PortfolioChart: React.FC = () => {
       style: {
         fontFamily: "inherit",
       },
+      animation: {
+        duration: 500
+      }
     },
     xAxis: {
       type: "datetime",
@@ -207,8 +247,8 @@ const PortfolioChart: React.FC = () => {
           y2: 1
         },
         stops: [
-          [0, Highcharts.color("#3182CE").setOpacity(0.4).get('rgba')],
-          [1, Highcharts.color("#3182CE").setOpacity(0).get('rgba')]
+          [0, new Highcharts.Color("#3182CE").setOpacity(0.4).get('rgba')],
+          [1, new Highcharts.Color("#3182CE").setOpacity(0).get('rgba')]
         ]
       },
       color: "#3182CE"
