@@ -49,8 +49,7 @@ const Footer = () => {
                 />
                 <Text
                   fontSize={{ base: "5xl", lg: "7xl" }}
-                  fontWeight="bold"
-                  letterSpacing="wide">
+                  fontWeight="bold">
                   Stockish
                 </Text>
               </Flex>

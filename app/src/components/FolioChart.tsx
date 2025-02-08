@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import axios from 'axios';
-import { Box, Spinner, Text } from '@chakra-ui/react';
+import React, { useEffect, useState } from "react";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import axios from "axios";
+import { Box, Spinner, Text } from "@chakra-ui/react";
+import tokens from "../services/tokens.service";
 
 const PortfolioChart: React.FC = () => {
   const [chartData, setChartData] = useState<[number, number][]>([]);
@@ -10,17 +11,19 @@ const PortfolioChart: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!tokens.isAuthenticated()) return;
+
     const fetchPortfolioHistory = async () => {
       try {
-        const response = await axios.get('/api/user/portfolio/history');
+        const response = await axios.get("/api/user/portfolio/history");
         // data format: [{ timestamp: number, value: number }]
         const formattedData = response.data.map((point: any) => [
           point.timestamp,
-          point.value
+          point.value,
         ]);
         setChartData(formattedData);
       } catch (err) {
-        setError('Failed to load portfolio data');
+        setError("Failed to load portfolio data");
         console.error(err);
       } finally {
         setIsLoading(false);
@@ -30,45 +33,61 @@ const PortfolioChart: React.FC = () => {
     fetchPortfolioHistory();
   }, []);
 
+  if (!tokens.isAuthenticated()) {
+    return (
+      <Box
+        mt={4}
+        mb={4}
+        height="300px"
+        display="flex"
+        alignItems="center"
+        justifyContent="center">
+        <Text color="gray.400" fontSize="lg">
+          Sign-in to view portfolio graph
+        </Text>
+      </Box>
+    );
+  }
+
   const options: Highcharts.Options = {
     title: {
-      text: 'Portfolio Value (30 Days)'
+      text: "Portfolio Value (30 Days)",
     },
     chart: {
-      type: 'spline',
+      type: "spline",
       style: {
-        fontFamily: 'inherit'
-      }
+        fontFamily: "inherit",
+      },
     },
     xAxis: {
-      type: 'datetime',
+      type: "datetime",
       title: {
-        text: 'Date'
-      }
+        text: "Date",
+      },
     },
     yAxis: {
       title: {
-        text: 'Portfolio Value ($)'
-      }
+        text: "Portfolio Value ($)",
+      },
     },
     series: [
       {
-        name: 'Portfolio Value',
+        name: "Portfolio Value",
         data: chartData,
-        type: 'spline',
-        color: '#22D3EE',
-      }
+        type: "spline",
+        color: "#22D3EE",
+      },
     ],
     credits: {
-      enabled: false
+      enabled: false,
     },
     plotOptions: {
       spline: {
         marker: {
-          enabled: false
-        }
-      }
-    }
+          enabled: false,
+        },
+      },
+    },
   };
 
   if (isLoading) return <Spinner />;

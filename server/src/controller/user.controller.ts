@@ -96,7 +96,7 @@ const getPortfolio = async (req: Request, res: Response) => {
 
 const getPortfolioHistory = async (req: Request, res: Response) => {
 	try {
-	  const userId = req.userId; // comes from the authjwt middleware
+	  const userId = req.body.userId;
 	  const thirtyDaysAgo = new Date();
 	  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
   
@@ -119,7 +119,7 @@ const getPortfolioHistory = async (req: Request, res: Response) => {
 	  const user = await User.findById(userId);
 	  if (!user) return;
   
-	  // Calculate portfolio value using existing getPortfolio logic
+	  // Calculate portfolio value
 	  let portfolioValue = user.cash;
 	  let positionsNoDupes: { [key: string]: number } = {};
 	  
