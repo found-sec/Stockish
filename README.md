@@ -15,7 +15,7 @@ An educational stock simulator app based on Spikecodes' [Stotra](https://github.
 <table>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/27e65478-c729-4695-9d53-afe370df1ea6" width="300">
+      <img src="https://github.com/user-attachments/assets/c49c3113-473f-43f5-bb66-54d835776e11" width="300">
       <br>Landing Page
     </td>
     <td>
