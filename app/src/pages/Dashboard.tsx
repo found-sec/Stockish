@@ -8,6 +8,7 @@ import {
   Link,
 } from "@chakra-ui/react";
 import PortfolioPreview from "../components/PortfolioPreview";
+import FolioChart from "../components/FolioChart";
 import React from "react";
 import PositionsList from "../components/PositionsList";
 import Newsfeed from "../components/Newsfeed";
@@ -22,13 +23,13 @@ export default function Dashboard() {
     <Box className="Dashboard">
       <Flex direction={{ base: "column", md: "row" }} gap={5}>
         <Box flex="0.75">
-          {tokens.isAuthenticated() ? (
+
             <>
               <PortfolioPreview />
               <Spacer height={6} />
-            
+              <FolioChart />
             </>
-          ) : (
+           : (
             <>
               <Heading as="h1" size="xl">
                 <Box as="span" fontWeight="bold">
@@ -50,10 +51,10 @@ export default function Dashboard() {
               </Text>
 
               <Box p={6} borderWidth={1} borderRadius="md" bg="gray.50">
-  
+                <FolioChart />
               </Box>
             </>
-          )}
+          )
           {!isOnMobile && (
             <>
               <Spacer height={10} />
