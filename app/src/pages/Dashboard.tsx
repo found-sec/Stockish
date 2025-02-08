@@ -28,7 +28,7 @@ export default function Dashboard() {
               <Spacer height={6} />
 
             </>
-           : (
+      
             <>
               <Heading as="h1" size="xl">
                 <Box as="span" fontWeight="bold">
@@ -53,7 +53,7 @@ export default function Dashboard() {
     
               </Box>
             </>
-          )
+          
           {!isOnMobile && (
             <>
               <Spacer height={10} />
