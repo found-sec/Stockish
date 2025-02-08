@@ -22,21 +22,19 @@ export default function Dashboard() {
     <Box className="Dashboard">
       <Flex direction={{ base: "column", md: "row" }} gap={5}>
         <Box flex="0.75">
-
+          {tokens.isAuthenticated() ? (
             <>
               <PortfolioPreview />
               <Spacer height={6} />
-
+            
             </>
-      
+          ) : (
             <>
               <Heading as="h1" size="xl">
                 <Box as="span" fontWeight="bold">
-                  Stock
+                  Stockish
                 </Box>
-                <Box as="span" fontStyle="italic">
-                  -ish
-                </Box>
+               
               </Heading>
               <Text fontSize="lg" mb={6}>
                 <Link as={RouterLink} to="/signup">
@@ -49,8 +47,11 @@ export default function Dashboard() {
                 to get started!
               </Text>
 
+              <Box p={6} borderWidth={1} borderRadius="md" bg="gray.50">
+  
+              </Box>
             </>
-          
+          )}
           {!isOnMobile && (
             <>
               <Spacer height={10} />
