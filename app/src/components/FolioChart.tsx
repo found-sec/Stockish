@@ -42,7 +42,7 @@ const PortfolioChart: React.FC = () => {
 
     const fetchPortfolioData = async () => {
       try {
-        const response = await api.get("/api/user/portfolio");
+        const response = await api.get("/user/portfolio");
         setPositions(response.data.positions || []);
         setCash(response.data.cash || 0);
         await calculatePortfolioHistory(response.data.positions, response.data.cash, response.data.ledger);
@@ -61,7 +61,7 @@ const PortfolioChart: React.FC = () => {
 
     const updateInterval = setInterval(async () => {
       try {
-        const response = await api.get("/api/user/portfolio");
+        const response = await api.get("/user/portfolio");
         const newPositions = response.data.positions || [];
         const newCash = response.data.cash || 0;
 
