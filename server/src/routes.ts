@@ -67,12 +67,6 @@ router.post(
 	stocksController.sellStock,
 );
 
-// folio route
-router.get(
-	"/api/user/portfolio/history",
-	[authJwt.verifyToken],
-	userController.getPortfolioHistory
-  );
 
 // News routes
 router.get("/api/news", newsController.getNews);
