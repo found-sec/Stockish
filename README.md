@@ -1,5 +1,14 @@
-![image](https://github.com/user-attachments/assets/b96987cb-c2e0-4186-a922-383e50fd8f87)
-![Website](https://img.shields.io/website?url=https%3A%2F%2Fstockish.vercel.app/)
+
+<div align="left">
+  <a href="https://github.com/found-sec/Stockish">
+    <img src="https://github.com/user-attachments/assets/b96987cb-c2e0-4186-a922-383e50fd8f87" alt="Stockish Banner" width="100%">
+  </a>
+
+  ![GitHub License](https://img.shields.io/github/license/found-sec/Stockish)
+  ![GitHub repo size](https://img.shields.io/github/repo-size/found-sec/Stockish)
+  ![Website](https://img.shields.io/website?url=https%3A%2F%2Fstockish.vercel.app)
+</div>
+
 
 # Stockish 📈  
 An educational stock simulator app based on Spikecodes' [Stotra](https://github.com/spikecodes/stotra). Built within 6 hours during a coding marathon.  
