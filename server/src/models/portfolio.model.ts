@@ -1,22 +1,30 @@
-// schema for folio data
+import mongoose, { Document, Schema, Model } from "mongoose";
 
-import mongoose from 'mongoose';
+// Define Portfolio interface
+export interface IPortfolio extends Document {
+  userId: string;
+  value: number;
+  timestamp: Date;
+}
 
-const Portfolio = new mongoose.Schema({
+// Define Portfolio schema
+export const PortfolioSchema = new Schema<IPortfolio>({
   userId: {
     type: String,
     required: true,
-    index: true
+    index: true,
   },
   value: {
     type: Number,
-    required: true
+    required: true,
   },
   timestamp: {
     type: Date,
     required: true,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-export default mongoose.model('Portfolio', Portfolio);
+// Create and export Portfolio model
+const Portfolio: Model<IPortfolio> = mongoose.model<IPortfolio>("Portfolio", PortfolioSchema);
+export default Portfolio;
