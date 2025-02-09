@@ -79,9 +79,9 @@ export default function HeroPage() {
       <Box
         position="absolute"
         top="30%"
-        left="50%"
+        left="40%"
         transform="translateX(-50%)"
-        width="140vw"
+        width="160vw"
         height="auto"
         zIndex={0}
         opacity={0.5}>
