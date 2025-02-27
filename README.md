@@ -98,3 +98,31 @@ cd /server
 npm run dev
 ```
 
+
+## 🚀 Deploying to Production with Vercel
+Step 1: Install the Vercel CLI (if you haven't already)
+To deploy your project to Vercel, you need to install the Vercel CLI. If you don't have it installed, run the following command:
+
+  ```node
+npm install -g vercel
+
+```
+Step 2: Log into Vercel
+Run the following command to log into your Vercel account (or sign up if you don’t have one yet):
+  ```node
+vercel login
+  ```
+
+Step 3: Deploy the Frontend (App)
+   1. Go to the app directory:
+      ```node
+      cd app
+      ```
+  2. Run the Vercel deploy command:
+      ```node
+      vercel
+     ```
+
+Alternatively, Vercel GUI can be used, visit  <a href="https://vercel.com/">Vercel</a> and start a new project, you need to fork this repository for that purpose and inport it in vercel and deploy.
+
+
